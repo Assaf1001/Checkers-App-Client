@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { LoginContext } from "../../context/LoginContext";
-import { logInAction } from "../../actions/loginActions";
+import { loginAction } from "../../actions/loginActions";
 import { saveUserOnCookie } from "../../cookies/cookies";
-import { logIn } from "../../server/auth";
+import { logIn } from "../../server/user";
 
 const LoginForm = (props) => {
     const history = useHistory();
@@ -56,9 +56,10 @@ const LoginForm = (props) => {
 
         logIn({ email, password })
             .then((userData) => {
-                dispatchUserData(logInAction(userData));
+                dispatchUserData(loginAction(userData));
+                console.log(userData);
                 saveUserOnCookie(userData);
-                history.push("/myAccount");
+                history.push("/lobby");
             })
             .catch((err) => {
                 if (err.message === "Email or Password are invalid!") {

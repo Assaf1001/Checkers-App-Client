@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { Redirect, Route } from "react-router";
+import { LoginContext } from "../context/LoginContext";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-    const { userData } = useContext();
+    const { userData } = useContext(LoginContext);
 
     return (
         <Route
@@ -11,7 +12,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 !!userData.user ? (
                     <Component {...props} />
                 ) : (
-                    <Redirect to="/loginPage" />
+                    <Redirect to="/login" />
                 )
             }
         />

@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import validator from "validator";
 import { useHistory } from "react-router-dom";
 import { LoginContext } from "../../context/LoginContext";
-import { logInAction } from "../../actions/loginActions";
+import { loginAction } from "../../actions/loginActions";
 import { saveUserOnCookie } from "../../cookies/cookies";
-import { singUp } from "../../server/auth";
+import { singUp } from "../../server/user";
 
 const SingupForm = (props) => {
     const { dispatchUserData } = useContext(LoginContext);
@@ -120,9 +120,10 @@ const SingupForm = (props) => {
         if (onSubmitIsValidInputs()) {
             singUp({ name, email, password })
                 .then((userData) => {
-                    dispatchUserData(logInAction(userData));
+                    dispatchUserData(loginAction(userData));
+                    console.log(userData);
                     saveUserOnCookie(userData);
-                    history.push("/myAccount");
+                    history.push("/lobby");
                 })
                 .catch((err) => {
                     if (err.message === "Email exist") {
