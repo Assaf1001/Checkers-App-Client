@@ -1,0 +1,39 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    width: 80vh;
+    height: 80vh;
+    outline: 5px solid black;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.light-cell {
+    @extend .cell;
+    background: #05423c;
+}
+
+.dark-cell {
+    @extend .cell;
+    background: #718f8c;
+}
+
+.piece {
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+}
+
+.black-piece {
+    @extend .piece;
+    background: black;
+}
+
+.white-piece {
+    @extend .piece;
+    background: white;
+}

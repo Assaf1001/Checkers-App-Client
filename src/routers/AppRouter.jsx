@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import PublicRoute from "./PublicRoute.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
+import LoginContextProvider from "../context/LoginContext.js";
 import Header from "../components/main/Header.jsx";
 import Footer from "../components/main/Footer.jsx";
 import LoginPage from "../components/login/LoginPage.jsx";
@@ -9,7 +10,8 @@ import HomePage from "../components/home/HomePage.jsx";
 import NotFoundPage from "../components/main/NotFoundPage.jsx";
 import GamePage from "../components/game/GamePage.jsx";
 import LobbyPage from "../components/lobby/LobbyPage.jsx";
-import LoginContextProvider from "../context/LoginContext.js";
+import Ui from "../components/game/checkers/Ui.jsx";
+import GameContextProvider from "../context/GameContext.js";
 
 const AppRouter = () => (
     <BrowserRouter>
@@ -23,7 +25,11 @@ const AppRouter = () => (
 
                 <PublicRoute path="/login" component={LoginPage} />
                 <PrivateRoute path="/lobby" component={LobbyPage} />
+
                 <PrivateRoute path="/game/:id" component={GamePage} />
+                <GameContextProvider>
+                    <Route path="/ui" component={Ui} />
+                </GameContextProvider>
 
                 <Route component={NotFoundPage} />
             </Switch>

@@ -10,7 +10,12 @@ export const singUp = async ({ name, email, password }) => {
 
         return {
             token: res.data.token,
-            user: { name: res.data.user.name, email: res.data.user.email },
+            user: {
+                name: res.data.user.name,
+                email: res.data.user.email,
+                level: res.data.user.level,
+                rank: res.data.user.rank,
+            },
         };
     } catch (err) {
         if (err.message.includes(400)) {
@@ -25,7 +30,12 @@ export const logIn = async ({ email, password }) => {
 
         return {
             token: res.data.token,
-            user: { name: res.data.user.name, email: res.data.user.email },
+            user: {
+                name: res.data.user.name,
+                email: res.data.user.email,
+                level: res.data.user.level,
+                rank: res.data.user.rank,
+            },
         };
     } catch (err) {
         if (err.message.includes(400)) {
@@ -70,7 +80,10 @@ export const editDetails = async (update, token) => {
 
         return {
             token: res.data.token,
-            user: { name: res.data.user.name, email: res.data.user.email },
+            user: {
+                name: res.data.user.name,
+                email: res.data.user.email,
+            },
         };
     } catch (err) {
         throw new Error(err.response.data.message);

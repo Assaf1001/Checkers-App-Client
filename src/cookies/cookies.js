@@ -18,5 +18,7 @@ export const getUserFromCookie = () => {
     const jsonUserData = Cookies.get(USER_DATA);
     if (jsonUserData === undefined) return null;
 
+    console.log(jsonUserData);
+
     return JSON.parse(jsonUserData);
 };
