@@ -1,5 +1,4 @@
 import {
-    getPiece,
     isLegalSelect,
     isLegalDestination,
     isLegalMove,
@@ -8,8 +7,6 @@ import { initializeBoard } from "./boardInitialize";
 
 export const gameInitialState = {
     board: initializeBoard(),
-    isWhitePlayerTurn: true,
-    isTurnOver: true,
     move: { from: null, to: null },
 };
 
@@ -22,13 +19,8 @@ const movePiece = (board, from, to) => {
 
 const gameReducer = (state, action) => {
     switch (action.type) {
-        case "START_NEW_TURN":
-            // if (state.isTurnOver) {
-            //     return { ...state, isTurnOver: false };
-            // }
-            return state;
         case "GET_FROM":
-            if (isLegalSelect(state.isWhitePlayerTurn, action.from)) {
+            if (isLegalSelect(action.from)) {
                 return { ...state, move: { from: action.from, to: null } };
             }
             return state;
@@ -37,14 +29,6 @@ const gameReducer = (state, action) => {
                 return {
                     ...state,
                     move: { from: state.move.from, to: action.to },
-                };
-            }
-            return state;
-        case "SWITCH_PLAYER":
-            if (state.isTurnOver) {
-                return {
-                    ...state,
-                    isWhitePlayerTurn: !state.isWhitePlayerTurn,
                 };
             }
             return state;
@@ -58,7 +42,6 @@ const gameReducer = (state, action) => {
                 return {
                     ...state,
                     board: newBoard,
-                    isTurnOver: true,
                     move: { from: null, to: null },
                 };
             }

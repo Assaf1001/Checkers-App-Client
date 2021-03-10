@@ -11,7 +11,6 @@ const Piece = ({ piece, index }) => {
 
     const handleClick = (event) => {
         event.stopPropagation();
-        // dispatchGame(startNewTurnAction());
         dispatchGame(getFromAction(index));
     };
 

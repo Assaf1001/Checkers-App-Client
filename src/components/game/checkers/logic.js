@@ -5,11 +5,6 @@ class Piece {
     }
 }
 
-function Move(from, to) {
-    this.from = from;
-    this.to = to;
-}
-
 // prettier-ignore
 const board = [
     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
@@ -24,6 +19,20 @@ const board = [
 
 let isWhitePlayerTurn = true;
 
+const switchTurn = () => {
+    isWhitePlayerTurn = !isWhitePlayerTurn;
+};
+
+const executeMove = (move) => {
+    const from = convertLocationToRowAndColum(move.from);
+    const to = convertLocationToRowAndColum(move.to);
+    board[to.row][to.column] = board[from.row][from.column];
+    board[from.row][from.column] = null;
+    console.log(board);
+};
+
+export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
+
 export const convertLocationToRowAndColum = (index) => {
     const row = Math.floor(index / 8);
     const column = index % 8;
@@ -34,8 +43,8 @@ export const getPiece = (row, column) => {
     return board[row][column];
 };
 
-export const isLegalSelect = (isWhitePlayerTurn, location) => {
-    if (location === null) return false;
+export const isLegalSelect = (location) => {
+    // if (location === null) return false;
     const { row, column } = convertLocationToRowAndColum(location);
     return (
         board[row][column] !== null &&
@@ -44,15 +53,15 @@ export const isLegalSelect = (isWhitePlayerTurn, location) => {
 };
 
 export const isLegalDestination = (move) => {
-    if (move.from === null || move.from === move.to) return false;
-    const to = convertLocationToRowAndColum(move.to);
-    return board[to.row][to.column] === null;
+    return move.from !== null && move.from !== move.to;
 };
 
 export const isLegalMove = (move) => {
-    if (move.from === null || move.to === null) return false;
-    const from = convertLocationToRowAndColum(move.from);
     const to = convertLocationToRowAndColum(move.to);
 
-    return true;
+    if (board[to.row][to.column] === null) {
+        executeMove(move);
+        switchTurn();
+        return true;
+    }
 };
