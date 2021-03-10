@@ -4,9 +4,7 @@ import Board from "./Board";
 const Ui = () => {
     return (
         <div>
-            {/* <GameContextProvider> */}
             <Board />
-            {/* </GameContextProvider> */}
         </div>
     );
 };

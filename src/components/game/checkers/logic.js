@@ -23,28 +23,47 @@ const switchTurn = () => {
     isWhitePlayerTurn = !isWhitePlayerTurn;
 };
 
-const executeMove = (move) => {
-    const from = convertLocationToRowAndColum(move.from);
-    const to = convertLocationToRowAndColum(move.to);
-    board[to.row][to.column] = board[from.row][from.column];
-    board[from.row][from.column] = null;
-    console.log(board);
-};
-
-export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
-
-export const convertLocationToRowAndColum = (index) => {
+const convertLocationToRowAndColum = (index) => {
     const row = Math.floor(index / 8);
     const column = index % 8;
     return { row, column };
 };
 
-export const getPiece = (row, column) => {
-    return board[row][column];
+const executeMove = ({ from, to }) => {
+    board[to.row][to.column] = board[from.row][from.column];
+    board[from.row][from.column] = null;
+};
+
+const executeCapture = ({ from, to }) => {};
+
+// board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] ||
+//     (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
+//         isWhitePlayerTurn
+//         ? Piece.isWhite
+//         : !Piece.isWhite);
+
+// prettier-ignore
+const isCaptureMove = ({from,to}) => {
+    return (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] && 
+            board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1].isWhite === !isWhitePlayerTurn &&
+            from.column - to.column === 2) ||
+            (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
+            board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1].isWhite === !isWhitePlayerTurn &&
+            from.column - to.column === -2)
+}
+
+const isLegalMove = ({ from, to }) => {
+    const vertical = isWhitePlayerTurn ? from.row - to.row : to.row - from.row;
+    const horizontal = Math.abs(from.column - to.column);
+
+    return (
+        (vertical === 1 && horizontal === 1) ||
+        (vertical === 2 && horizontal === 2 && isCaptureMove({ from, to }))
+    );
 };
 
 export const isLegalSelect = (location) => {
-    // if (location === null) return false;
+    ////
     const { row, column } = convertLocationToRowAndColum(location);
     return (
         board[row][column] !== null &&
@@ -53,15 +72,19 @@ export const isLegalSelect = (location) => {
 };
 
 export const isLegalDestination = (move) => {
-    return move.from !== null && move.from !== move.to;
+    if (move.from === null || move.from === move.to) return false;
+    const to = convertLocationToRowAndColum(move.to);
+    return board[to.row][to.column] === null;
 };
 
-export const isLegalMove = (move) => {
+export const playTurn = (move) => {
+    const from = convertLocationToRowAndColum(move.from);
     const to = convertLocationToRowAndColum(move.to);
-
-    if (board[to.row][to.column] === null) {
-        executeMove(move);
+    if (isLegalMove({ from, to })) {
+        executeMove({ from, to });
         switchTurn();
         return true;
     }
 };
+
+// export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;

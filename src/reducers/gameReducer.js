@@ -2,6 +2,7 @@ import {
     isLegalSelect,
     isLegalDestination,
     isLegalMove,
+    playTurn,
 } from "../components/game/checkers/logic";
 import { initializeBoard } from "./boardInitialize";
 
@@ -33,7 +34,7 @@ const gameReducer = (state, action) => {
             }
             return state;
         case "MOVE_PIECE":
-            if (isLegalMove(state.move)) {
+            if (playTurn(state.move)) {
                 const newBoard = movePiece(
                     state.board,
                     state.move.from,

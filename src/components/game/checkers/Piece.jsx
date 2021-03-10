@@ -1,10 +1,6 @@
 import React, { useContext } from "react";
 import { GameContext } from "../../../context/GameContext";
-import {
-    getFromAction,
-    startNewTurnAction,
-} from "../../../actions/gameActions.js";
-import { a, getA } from "./logic";
+import { getFromAction } from "../../../actions/gameActions.js";
 
 const Piece = ({ piece, index }) => {
     const { dispatchGame } = useContext(GameContext);
