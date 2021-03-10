@@ -22,6 +22,8 @@ const board = [
     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
 ]
 
+let isWhitePlayerTurn = true;
+
 export const convertLocationToRowAndColum = (index) => {
     const row = Math.floor(index / 8);
     const column = index % 8;
@@ -48,9 +50,9 @@ export const isLegalDestination = (move) => {
 };
 
 export const isLegalMove = (move) => {
-    console.log(move);
     if (move.from === null || move.to === null) return false;
     const from = convertLocationToRowAndColum(move.from);
     const to = convertLocationToRowAndColum(move.to);
+
     return true;
 };

@@ -4,13 +4,14 @@ import {
     getFromAction,
     startNewTurnAction,
 } from "../../../actions/gameActions.js";
+import { a, getA } from "./logic";
 
 const Piece = ({ piece, index }) => {
     const { dispatchGame } = useContext(GameContext);
 
     const handleClick = (event) => {
         event.stopPropagation();
-        dispatchGame(startNewTurnAction());
+        // dispatchGame(startNewTurnAction());
         dispatchGame(getFromAction(index));
     };
 

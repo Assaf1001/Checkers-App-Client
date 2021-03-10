@@ -3,11 +3,12 @@ import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import AppRouter from "./routers/AppRouter";
 import "./styles/styles.scss";
+// import "./components/game/checkers/logic.js";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <AppRouter />
-    </React.StrictMode>,
+    // <React.StrictMode>
+    <AppRouter />,
+    // </React.StrictMode>,
     document.getElementById("root")
 );
 

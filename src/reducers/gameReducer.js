@@ -23,9 +23,9 @@ const movePiece = (board, from, to) => {
 const gameReducer = (state, action) => {
     switch (action.type) {
         case "START_NEW_TURN":
-            if (state.isTurnOver) {
-                return { ...state, isTurnOver: false };
-            }
+            // if (state.isTurnOver) {
+            //     return { ...state, isTurnOver: false };
+            // }
             return state;
         case "GET_FROM":
             if (isLegalSelect(state.isWhitePlayerTurn, action.from)) {
@@ -34,7 +34,6 @@ const gameReducer = (state, action) => {
             return state;
         case "GET_TO":
             if (isLegalDestination({ from: state.move.from, to: action.to })) {
-                console.log("des");
                 return {
                     ...state,
                     move: { from: state.move.from, to: action.to },
@@ -56,12 +55,6 @@ const gameReducer = (state, action) => {
                     state.move.from,
                     state.move.to
                 );
-                console.log({
-                    ...state,
-                    board: newBoard,
-                    isTurnOver: true,
-                    move: { from: null, to: null },
-                });
                 return {
                     ...state,
                     board: newBoard,
