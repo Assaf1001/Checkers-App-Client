@@ -23,6 +23,16 @@ const setPieces = (board) => {
     return board;
 };
 
+// const setPieces = (board) => {
+//     for (let i = 0; i < 2; i++) {
+//         if (i >= 24 && i < 40) continue;
+//         if (board[i].isPlayable) {
+//             board[i].piece = i < 24 ? { color: "black" } : { color: "white" };
+//         }
+//     }
+//     return board;
+// };
+
 export const initializeBoard = () => {
     const cleanBoard = setCells();
     const board = setPieces(cleanBoard);

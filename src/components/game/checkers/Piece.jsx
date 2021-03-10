@@ -1,21 +1,22 @@
-import React from "react";
-import { getPiece } from "./utils";
+import React, { useContext } from "react";
+import { GameContext } from "../../../context/GameContext";
+import {
+    getFromAction,
+    startNewTurnAction,
+} from "../../../actions/gameActions.js";
 
 const Piece = ({ piece, index }) => {
-    const hanleClick = (event) => {
+    const { dispatchGame } = useContext(GameContext);
+
+    const handleClick = (event) => {
         event.stopPropagation();
-
-        const row = Math.floor(index / 8);
-        const column = index % 8;
-
-        console.log("piece", index);
-        const piece = getPiece(row, column);
-        console.log(piece);
+        dispatchGame(startNewTurnAction());
+        dispatchGame(getFromAction(index));
     };
 
     return (
         <div
-            onClick={hanleClick}
+            onClick={handleClick}
             className={piece.color === "black" ? "black-piece" : "white-piece"}
         ></div>
     );
