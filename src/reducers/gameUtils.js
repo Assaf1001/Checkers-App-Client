@@ -23,18 +23,26 @@ const setPieces = (board) => {
     return board;
 };
 
-// const setPieces = (board) => {
-//     for (let i = 0; i < 2; i++) {
-//         if (i >= 24 && i < 40) continue;
-//         if (board[i].isPlayable) {
-//             board[i].piece = i < 24 ? { color: "black" } : { color: "white" };
-//         }
-//     }
-//     return board;
-// };
-
 export const initializeBoard = () => {
     const cleanBoard = setCells();
     const board = setPieces(cleanBoard);
     return board;
+};
+
+export const convertLogicBoardToUiBoard = (board) => {
+    const newBoard = [];
+    board.forEach((row) =>
+        row.forEach((cell) => {
+            const cellObj = {};
+            if (cell) {
+                cellObj.piece = { color: cell.isWhite ? "white" : "black" };
+                cellObj.isPlayable = true;
+            } else {
+                cellObj.piece = null;
+                cellObj.isPlayable = cell === null;
+            }
+            newBoard.push(cellObj);
+        })
+    );
+    return newBoard;
 };

@@ -18,6 +18,7 @@ const board = [
 ]
 
 let isWhitePlayerTurn = true;
+let isCaptureMoveActive = false;
 
 const switchTurn = () => {
     isWhitePlayerTurn = !isWhitePlayerTurn;
@@ -34,22 +35,24 @@ const executeMove = ({ from, to }) => {
     board[from.row][from.column] = null;
 };
 
-const executeCapture = ({ from, to }) => {};
-
-// board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] ||
-//     (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
-//         isWhitePlayerTurn
-//         ? Piece.isWhite
-//         : !Piece.isWhite);
+const executeCapture = ({ from, to }) => {
+    board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][
+        to.column > from.column ? to.column - 1 : to.column + 1
+    ] = null;
+};
 
 // prettier-ignore
 const isCaptureMove = ({from,to}) => {
-    return (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] && 
+    if ((board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] && 
             board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1].isWhite === !isWhitePlayerTurn &&
             from.column - to.column === 2) ||
             (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
             board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1].isWhite === !isWhitePlayerTurn &&
-            from.column - to.column === -2)
+            from.column - to.column === -2)){
+                isCaptureMoveActive = true;
+                return true;
+            }
+    return false;
 }
 
 const isLegalMove = ({ from, to }) => {
@@ -82,9 +85,14 @@ export const playTurn = (move) => {
     const to = convertLocationToRowAndColum(move.to);
     if (isLegalMove({ from, to })) {
         executeMove({ from, to });
+        if (isCaptureMoveActive) {
+            console.log("here");
+            executeCapture({ from, to });
+            isCaptureMoveActive = false;
+        }
         switchTurn();
-        return true;
     }
+    return board;
 };
 
 // export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;

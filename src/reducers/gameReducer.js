@@ -1,21 +1,13 @@
 import {
     isLegalSelect,
     isLegalDestination,
-    isLegalMove,
     playTurn,
 } from "../components/game/checkers/logic";
-import { initializeBoard } from "./boardInitialize";
+import { initializeBoard, convertLogicBoardToUiBoard } from "./gameUtils";
 
 export const gameInitialState = {
     board: initializeBoard(),
     move: { from: null, to: null },
-};
-
-const movePiece = (board, from, to) => {
-    const newBoard = board.map((piece) => ({ ...piece }));
-    newBoard[to].piece = newBoard[from].piece;
-    newBoard[from].piece = null;
-    return newBoard;
 };
 
 const gameReducer = (state, action) => {
@@ -27,6 +19,7 @@ const gameReducer = (state, action) => {
             return state;
         case "GET_TO":
             if (isLegalDestination({ from: state.move.from, to: action.to })) {
+                console.log("here");
                 return {
                     ...state,
                     move: { from: state.move.from, to: action.to },
@@ -34,12 +27,9 @@ const gameReducer = (state, action) => {
             }
             return state;
         case "MOVE_PIECE":
-            if (playTurn(state.move)) {
-                const newBoard = movePiece(
-                    state.board,
-                    state.move.from,
-                    state.move.to
-                );
+            if (state.move.to && state.move.from) {
+                const board = playTurn(state.move);
+                const newBoard = convertLogicBoardToUiBoard(board);
                 return {
                     ...state,
                     board: newBoard,
@@ -47,7 +37,6 @@ const gameReducer = (state, action) => {
                 };
             }
             return state;
-
         default:
             return state;
     }
