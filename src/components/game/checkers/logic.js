@@ -28,7 +28,9 @@ export const board = [
 // ]
 
 let isWhitePlayerTurn = true;
-let isCaptureMoveActive = false;
+let mustCapturePiece = null;
+
+export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
 
 const switchTurn = () => {
     isWhitePlayerTurn = !isWhitePlayerTurn;
@@ -43,11 +45,8 @@ const convertLocationToRowAndColum = (index) => {
 const executeMove = ({ from, to }) => {
     board[to.row][to.column] = board[from.row][from.column];
     board[from.row][from.column] = null;
+    if (isPromotion({ to })) promotePiece({ to });
 };
-// const executeMove = ({ from, to }) => {
-//     board[to.row][to.column] = board[from.row][from.column];
-//     board[from.row][from.column] = null;
-// };
 
 const executeCapture = ({ from, to }) => {
     executeMove({ from, to });
@@ -55,13 +54,6 @@ const executeCapture = ({ from, to }) => {
         to.column > from.column ? to.column - 1 : to.column + 1
     ] = null;
 };
-
-// const executeCapture = ({ from, to }) => {
-//     executeMove({ from, to });
-//     board[to.row > from.row ? to.row - 1 : to.row + 1][
-//         to.column > from.column ? to.column - 1 : to.column + 1
-//     ] = null;
-// };
 
 const isPromotion = ({ to }) => {
     return isWhitePlayerTurn ? to.row === 0 : to.row === 7;
@@ -73,8 +65,6 @@ const promotePiece = ({ to }) => {
 
 // prettier-ignore
 const getMovementDirections = ({ from, to }) => {
-    console.log(from,to)
-    console.log(board)
     const vertical = board[from.row][from.column].isKing ? Math.abs(from.row - to.row) :
         (isWhitePlayerTurn ? from.row - to.row : to.row - from.row)
     const horizontal = Math.abs(from.column - to.column);
@@ -84,46 +74,31 @@ const getMovementDirections = ({ from, to }) => {
 // prettier-ignore
 const isLegalMove = ({ from, to }) => {
     const {vertical,horizontal} = getMovementDirections({from,to})
-
-    return (vertical === 1 && horizontal === 1 && board[to.row][to.column] === null) || 
-        (horizontal === 2 && vertical === 2 && isCaptureMove({from,to},{vertical,horizontal}))
+    return vertical === 1 && horizontal === 1 && board[to.row][to.column] === null
 };
 
 // prettier-ignore
-const isCaptureMove = ({from,to},{vertical,horizontal}) => {
-    if ((board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] && 
-            board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1].isWhite === !isWhitePlayerTurn ) ||
-            (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
-            board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1].isWhite === !isWhitePlayerTurn )) {
-                isCaptureMoveActive = true;
-                return true;
-            }else if(board[from.row][from.column].isKing){
-                isCaptureMoveActive = true;
-                return true
-            }
-    return false;
+const isCaptureMove = ({from,to}) => {
+    const {vertical,horizontal} = getMovementDirections({from,to})
+    if(vertical !== 2 || horizontal !== 2) return false
+
+    return (
+        (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] && 
+        board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1].isWhite === !isWhitePlayerTurn ) ||
+        (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
+        board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1].isWhite === !isWhitePlayerTurn ) ||
+        board[from.row][from.column].isKing
+    )
 }
 
 // prettier-ignore
 const isPieceCanCapture = (row,column)=>{
-    // console.log(row,column)
-    // if(row === 4 && column===7){
-    //     console.log((board[isWhitePlayerTurn ? row - 1 : row + 1][column - 1] instanceof Piece &&
-    //         board[isWhitePlayerTurn ? row - 1 : row + 1][column - 1].isWhite === !isWhitePlayerTurn &&
-    //         board[isWhitePlayerTurn ? row - 2 : row + 2][column - 2] === null ) ||
-    //         (board[isWhitePlayerTurn ? row - 1 : row + 1][column + 1] instanceof Piece &&
-    //         board[isWhitePlayerTurn ? row - 1 : row + 1][column + 1].isWhite === !isWhitePlayerTurn &&
-    //         board[isWhitePlayerTurn ? row - 2 : row + 2][column + 2] === null ))
-    //     }
-        // if(  ( row-2<0 || row+2>7 || column-2<0 || column+2>7) ) return false
-        if(  ( row-2<0 || row+2>7) ) return false
-
         return ( 
-            (column-2>0 &&
+            ((isWhitePlayerTurn ? row-2>=0 : row+2<=7) && column-2>=0 && 
             board[isWhitePlayerTurn ? row - 1 : row + 1][column - 1] instanceof Piece &&
             board[isWhitePlayerTurn ? row - 1 : row + 1][column - 1].isWhite === !isWhitePlayerTurn &&
             board[isWhitePlayerTurn ? row - 2 : row + 2][column - 2] === null ) ||
-            (column+2<7 &&
+            ((isWhitePlayerTurn ? row-2>=0 : row+2<=7) && column+2<=7 &&
             board[isWhitePlayerTurn ? row - 1 : row + 1][column + 1] instanceof Piece &&
             board[isWhitePlayerTurn ? row - 1 : row + 1][column + 1].isWhite === !isWhitePlayerTurn &&
             board[isWhitePlayerTurn ? row - 2 : row + 2][column + 2] === null )
@@ -132,29 +107,27 @@ const isPieceCanCapture = (row,column)=>{
 
 // prettier-ignore
 const isKingCanCapture = (row,column)=>{
-    try{    
         return ( 
-            (board[row - 1][column - 1].isWhite === !isWhitePlayerTurn && board[row - 2][column - 2] === null ) ||
-            (board[row - 1][column + 1].isWhite === !isWhitePlayerTurn && board[row - 2][column + 2] === null ) ||
-            (board[row + 1][column - 1].isWhite === !isWhitePlayerTurn && board[row + 2][column - 2] === null ) ||
-            (board[row + 1][column + 1].isWhite === !isWhitePlayerTurn && board[row + 2][column + 2] === null )
+            (row-2>=0 && column-2>=0 && board[row - 1][column - 1] instanceof Piece &&
+            board[row - 1][column - 1].isWhite === !isWhitePlayerTurn && board[row - 2][column - 2] === null ) ||
+            (row-2>=0 && column+2<=7 && board[row - 1][column + 1] instanceof Piece &&
+            board[row - 1][column + 1].isWhite === !isWhitePlayerTurn && board[row - 2][column + 2] === null ) ||
+            (row+2<=7 && column-2>=0 && board[row + 1][column - 1] instanceof Piece &&
+            board[row + 1][column - 1].isWhite === !isWhitePlayerTurn && board[row + 2][column - 2] === null ) ||
+            (row+2<=7 && column+2<=7 && board[row + 1][column + 1] instanceof Piece &&
+            board[row + 1][column + 1].isWhite === !isWhitePlayerTurn && board[row + 2][column + 2] === null )
         )
-    }catch(err){
-        return false
-    }
 }
 
 // prettier-ignore
-const findMustCapturePiece =()=>{
+export const getMustCapturePiece =()=>{
     for (let row = 0;row<8;row++){
         for (let column=0 ; column<8;column++){
             if (board[row][column] == null || board[row][column].isWhite !== isWhitePlayerTurn) continue
-                // if(board[row][column].isKing){
-                //     if(isKingCanCapture(row,column)) return {row,column}
-                // }
-                if (isPieceCanCapture(row,column)) {
-                    console.log(row,column)
-                    return {row,column}}
+                if(board[row][column].isKing)
+                    if(isKingCanCapture(row,column)) return {row,column}
+                
+                if (isPieceCanCapture(row,column)) return {row,column}
         }
     }
 }
@@ -177,15 +150,16 @@ export const playTurn = (move) => {
     const from = convertLocationToRowAndColum(move.from);
     const to = convertLocationToRowAndColum(move.to);
     if (isLegalMove({ from, to })) {
-        if (isCaptureMoveActive) {
-            executeCapture({ from, to });
-            isCaptureMoveActive = false;
-            if (isPieceCanCapture(to.row, to.column)) switchTurn();
-        } else executeMove({ from, to });
-        if (isPromotion({ to })) promotePiece({ to });
+        executeMove({ from, to });
         switchTurn();
-        const mustCapturePiece = findMustCapturePiece();
-        console.log(mustCapturePiece);
+    } else if (isCaptureMove({ from, to })) {
+        executeCapture({ from, to });
+        if (
+            !isPieceCanCapture(to.row, to.column) &&
+            !isKingCanCapture(to.row, to.column)
+        )
+            switchTurn();
     }
+    console.log(getMustCapturePiece());
     return board;
 };

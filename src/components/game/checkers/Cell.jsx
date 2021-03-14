@@ -1,25 +1,56 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../../context/GameContext";
 import { getToAction, movePieceAction } from "../../../actions/gameActions";
 import Piece from "./Piece";
-import { playTurn } from "./logic";
-import { convertLogicBoardToUiBoard } from "../../../reducers/gameUtils";
 
 const Cell = ({ cell, index }) => {
     const { game, dispatchGame } = useContext(GameContext);
+    const [className, setClassName] = useState(
+        cell.isPlayable ? "light-cell" : "dark-cell"
+    );
 
-    const handleClick = () => {
+    useEffect(() => {
+        if (game.move.from === index) {
+            setClassName((currunt) => currunt + " highlighted-from");
+        } else {
+            setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
+        }
+    }, [game.move.from, index, cell.isPlayable]);
+
+    const dropPiece = (event) => {
+        event.preventDefault();
         dispatchGame(getToAction(index));
         dispatchGame(movePieceAction(index));
-        // const board = playTurn({ from: game.move.from, to: index });
-        // const newBoard = convertLogicBoardToUiBoard(board);
-        // dispatchGame({ type: "A", board: newBoard });
     };
+
+    const dragEnter = () => {
+        if (game.move.from !== index && cell.isPlayable && !cell.piece) {
+            setClassName((current) => current + " highlighted-to");
+        }
+    };
+
+    const drapLeave = () => {
+        if (game.move.from !== index) {
+            setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
+        }
+    };
+
+    const dragOver = (event) => {
+        event.preventDefault();
+    };
+
+    // const handleClick = () => {
+    //     dispatchGame(getToAction(index));
+    //     dispatchGame(movePieceAction(index));
+    // };
 
     return (
         <div
-            onClick={handleClick}
-            className={cell.isPlayable ? "light-cell" : "dark-cell"}
+            onDrop={dropPiece}
+            onDragEnter={dragEnter}
+            onDragLeave={drapLeave}
+            onDragOver={dragOver}
+            className={className}
         >
             {cell.piece && <Piece piece={cell.piece} index={index} />}
         </div>

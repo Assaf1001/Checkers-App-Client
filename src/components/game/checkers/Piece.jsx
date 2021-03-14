@@ -1,18 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { GameContext } from "../../../context/GameContext";
-import { getFromAction } from "../../../actions/gameActions.js";
+import { getFromAction, getTurnAction } from "../../../actions/gameActions.js";
 
 const Piece = ({ piece, index }) => {
-    const { dispatchGame } = useContext(GameContext);
+    const { game, dispatchGame } = useContext(GameContext);
 
-    const handleClick = (event) => {
-        event.stopPropagation();
+    useEffect(() => {
+        dispatchGame(getTurnAction());
+    }, [dispatchGame]);
+
+    const dragPiece = () => {
         dispatchGame(getFromAction(index));
     };
 
+    // const handleClick = (event) => {
+    //     event.stopPropagation();
+    //     dispatchGame(getFromAction(index));
+    // };
+
     return (
         <div
-            onClick={handleClick}
+            draggable={game.turn === piece.color}
+            onDragStart={dragPiece}
             className={piece.color === "black" ? "black-piece" : "white-piece"}
         ></div>
     );

@@ -1,3 +1,7 @@
+export const getTurnAction = () => ({
+    type: "GET_TURN",
+});
+
 export const getFromAction = (from) => ({
     type: "GET_FROM",
     from,

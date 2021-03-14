@@ -22,9 +22,20 @@
     background: #718f8c;
 }
 
+.highlighted-from {
+    background: darken(#718f8c,15);
+}
+
+.highlighted-to  {
+    background: lighten(#718f8c,15);
+
+    //background: lightblue;
+}
+
 .piece {
     width: 80%;
     height: 80%;
+    transform: translate(0, 0);
     border-radius: 50%;
 }
 
