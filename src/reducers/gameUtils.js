@@ -18,3 +18,12 @@ export const convertLogicBoardToUiBoard = (board) => {
     );
     return newBoard;
 };
+
+export const convertPieceLocationToIndex = ({ row, column }) => {
+    return row * 8 + column;
+};
+
+export const convertPieceArrayToIndexs = (arr) => {
+    // const indexsArray =[]
+    return arr.map((location) => convertPieceLocationToIndex(location));
+};

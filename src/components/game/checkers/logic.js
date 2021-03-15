@@ -9,9 +9,9 @@ class Piece {
 export const board = [
     [undefined,new Piece(false),undefined,null,undefined,new Piece(false),undefined,new Piece(false)],
     [new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,null,undefined],
-    [undefined,null,undefined,null,undefined,null,undefined,new Piece(false)],
+    [undefined,null,undefined,null,undefined,null,undefined,null],
     [new Piece(false),undefined,null,undefined,null,undefined,new Piece(false),undefined],
-    [undefined,new Piece(true),undefined,null,undefined,null,undefined,new Piece(true)],
+    [undefined,null,undefined,null,undefined,null,undefined,null],
     [new Piece(true),undefined,null,undefined,new Piece(true),undefined,new Piece(true),undefined],
     [undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true)],
     [null,undefined,new Piece(true),undefined,null,undefined,new Piece(true),undefined],
@@ -27,7 +27,7 @@ export const board = [
 //     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
 // ]
 
-let isWhitePlayerTurn = true;
+let isWhitePlayerTurn = false;
 let mustCapturePiece = null;
 
 export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
@@ -119,21 +119,33 @@ const isKingCanCapture = (row,column)=>{
         )
 }
 
+const isDoubleCaptureActive = ({ row, column }) => {
+    return mustCapturePiece.row === row && mustCapturePiece.column === column;
+};
+
+export const getMustCapturePiece = () => mustCapturePiece;
+
 // prettier-ignore
-export const getMustCapturePiece =()=>{
+export const findMustCapturePiece =()=>{
+    const piecesCanCaptureArray = []
     for (let row = 0;row<8;row++){
         for (let column=0 ; column<8;column++){
             if (board[row][column] == null || board[row][column].isWhite !== isWhitePlayerTurn) continue
                 if(board[row][column].isKing)
-                    if(isKingCanCapture(row,column)) return {row,column}
+                    if(isKingCanCapture(row,column)) piecesCanCaptureArray.push ({row,column})
                 
-                if (isPieceCanCapture(row,column)) return {row,column}
+                if (isPieceCanCapture(row,column)) piecesCanCaptureArray.push ({row,column})
         }
     }
+    return piecesCanCaptureArray
 }
 
 export const isLegalSelect = (location) => {
     const { row, column } = convertLocationToRowAndColum(location);
+    if (mustCapturePiece)
+        for (let location of mustCapturePiece) {
+            if (location.row === row && location.column === column) return true;
+        }
     return (
         board[row][column] !== null &&
         isWhitePlayerTurn === board[row][column].isWhite
@@ -149,17 +161,23 @@ export const isLegalSelect = (location) => {
 export const playTurn = (move) => {
     const from = convertLocationToRowAndColum(move.from);
     const to = convertLocationToRowAndColum(move.to);
-    if (isLegalMove({ from, to })) {
-        executeMove({ from, to });
-        switchTurn();
-    } else if (isCaptureMove({ from, to })) {
-        executeCapture({ from, to });
-        if (
-            !isPieceCanCapture(to.row, to.column) &&
-            !isKingCanCapture(to.row, to.column)
-        )
+    if (mustCapturePiece == null || isDoubleCaptureActive(from)) {
+        mustCapturePiece = null;
+        if (isLegalMove({ from, to })) {
+            executeMove({ from, to });
             switchTurn();
+        } else if (isCaptureMove({ from, to })) {
+            executeCapture({ from, to });
+            if (
+                isPieceCanCapture(to.row, to.column) ||
+                isKingCanCapture(to.row, to.column)
+            )
+                mustCapturePiece = to;
+            if (mustCapturePiece === null) switchTurn();
+        }
+        if (mustCapturePiece === null)
+            mustCapturePiece = findMustCapturePiece();
+        console.log(mustCapturePiece);
     }
-    console.log(getMustCapturePiece());
     return board;
 };

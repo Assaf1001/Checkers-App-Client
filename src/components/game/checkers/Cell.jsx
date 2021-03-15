@@ -1,26 +1,53 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../../context/GameContext";
-import { getToAction, movePieceAction } from "../../../actions/gameActions";
+import {
+    getMustCapturePieceAction,
+    getToAction,
+    movePieceAction,
+} from "../../../actions/gameActions";
 import Piece from "./Piece";
+import { getMustCapturePiece } from "./logic";
 
 const Cell = ({ cell, index }) => {
     const { game, dispatchGame } = useContext(GameContext);
+
     const [className, setClassName] = useState(
         cell.isPlayable ? "light-cell" : "dark-cell"
     );
 
     useEffect(() => {
-        if (game.move.from === index) {
+        // dispatchGame(getMustCapturePieceAction());
+        if (game.mustCapturePiece === index) {
+            setClassName("dark-cell" + " highlighted-from");
+        } else if (game.move.from === index) {
             setClassName((currunt) => currunt + " highlighted-from");
         } else {
             setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
         }
-    }, [game.move.from, index, cell.isPlayable]);
+    }, [game.move.from, index, cell.isPlayable, game.mustCapturePiece]);
+
+    // useEffect(() => {
+    //     if (game.move.from === index) {
+    //         setClassName((currunt) => currunt + " highlighted-from");
+    //     } else {
+    //         setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
+    //     }
+    // }, [game.move.from, index, cell.isPlayable]);
+
+    // useEffect(() => {
+    //     if (game.mustCapturePiece === index) {
+    //         console.log("here");
+    //         setClassName("dark-cell" + " highlighted-from");
+    //     } else {
+    //         setClassName("dark-cell");
+    //     }
+    // }, [game.mustCapturePiece]);
 
     const dropPiece = (event) => {
         event.preventDefault();
         dispatchGame(getToAction(index));
         dispatchGame(movePieceAction(index));
+        dispatchGame(getMustCapturePieceAction());
     };
 
     const dragEnter = () => {

@@ -12,10 +12,15 @@ export const getToAction = (to) => ({
     to,
 });
 
+export const getMustCapturePieceAction = () => ({
+    type: "GET_MUST_CAPTURE_PIECE",
+});
+
 export const movePieceAction = (to) => ({
     type: "MOVE_PIECE",
     to,
 });
+
 // export const getFromAction = (from) => ({
 //     type: "GET_FROM",
 //     from,
