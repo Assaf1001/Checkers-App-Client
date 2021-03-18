@@ -17,7 +17,7 @@ const Cell = ({ cell, index }) => {
 
     useEffect(() => {
         // dispatchGame(getMustCapturePieceAction());
-        if (game.mustCapturePiece === index) {
+        if (game.mustCapturePiece.includes(index)) {
             setClassName("dark-cell" + " highlighted-from");
         } else if (game.move.from === index) {
             setClassName((currunt) => currunt + " highlighted-from");

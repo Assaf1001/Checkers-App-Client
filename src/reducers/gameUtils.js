@@ -24,6 +24,5 @@ export const convertPieceLocationToIndex = ({ row, column }) => {
 };
 
 export const convertPieceArrayToIndexs = (arr) => {
-    // const indexsArray =[]
     return arr.map((location) => convertPieceLocationToIndex(location));
 };

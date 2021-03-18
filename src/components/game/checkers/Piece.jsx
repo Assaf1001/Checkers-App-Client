@@ -4,9 +4,10 @@ import { getFromAction, getTurnAction } from "../../../actions/gameActions.js";
 
 const Piece = ({ piece, index }) => {
     const { game, dispatchGame } = useContext(GameContext);
-    const isDragabble = true;
-    // game.turn === piece.color &&
-    // (game.mustCapturePiece === null || game.mustCapturePiece === index);
+    const isDragabble =
+        game.turn === piece.color &&
+        (game.mustCapturePiece.length === 0 ||
+            game.mustCapturePiece.includes(index));
 
     useEffect(() => {
         dispatchGame(getTurnAction());

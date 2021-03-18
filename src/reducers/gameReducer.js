@@ -8,13 +8,12 @@ import {
 import {
     convertLogicBoardToUiBoard,
     convertPieceArrayToIndexs,
-    convertPieceLocationToIndex,
 } from "./gameUtils";
 
 export const gameInitialState = {
     board: convertLogicBoardToUiBoard(board),
     turn: "white",
-    mustCapturePiece: null,
+    mustCapturePiece: [],
     move: { from: null, to: null },
 };
 
@@ -38,14 +37,15 @@ const gameReducer = (state, action) => {
             const piecesArray = convertPieceArrayToIndexs(
                 getMustCapturePiece()
             );
-            console.log(piecesArray);
-            if (piecesArray != null) {
-                // console.log(piece);
-                // const index = convertPieceLocationToIndex(piece);
-                return { ...state, mustCapturePiece: piecesArray };
-            }
-            return { ...state, mustCapturePiece: null };
+            // if (piecesArray.length) {
+            // console.log("here");
+            // console.log(piece);
+            // const index = convertPieceLocationToIndex(piece);
+            return { ...state, mustCapturePiece: piecesArray };
+        // }
+        // return { ...state, mustCapturePiece: null };
         case "MOVE_PIECE":
+            console.log(state.move.from, action.to);
             if (state.move.from && action.to) {
                 const move = {
                     from: state.move.from,
