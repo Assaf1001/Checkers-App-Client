@@ -3,10 +3,10 @@ import { GameContext } from "../../../context/GameContext";
 import {
     getMustCapturePieceAction,
     getToAction,
+    getWinnerAction,
     movePieceAction,
 } from "../../../actions/gameActions";
 import Piece from "./Piece";
-import { getMustCapturePiece } from "./logic";
 
 const Cell = ({ cell, index }) => {
     const { game, dispatchGame } = useContext(GameContext);
@@ -16,38 +16,22 @@ const Cell = ({ cell, index }) => {
     );
 
     useEffect(() => {
-        // dispatchGame(getMustCapturePieceAction());
-        if (game.mustCapturePiece.includes(index)) {
-            setClassName("dark-cell" + " highlighted-from");
+        if (game.mustCapturePieces.includes(index)) {
+            // setClassName("dark-cell" + " highlighted-from");
+            setClassName((current) => current + " highlighted-from");
         } else if (game.move.from === index) {
             setClassName((currunt) => currunt + " highlighted-from");
         } else {
             setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
         }
-    }, [game.move.from, index, cell.isPlayable, game.mustCapturePiece]);
-
-    // useEffect(() => {
-    //     if (game.move.from === index) {
-    //         setClassName((currunt) => currunt + " highlighted-from");
-    //     } else {
-    //         setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
-    //     }
-    // }, [game.move.from, index, cell.isPlayable]);
-
-    // useEffect(() => {
-    //     if (game.mustCapturePiece === index) {
-    //         console.log("here");
-    //         setClassName("dark-cell" + " highlighted-from");
-    //     } else {
-    //         setClassName("dark-cell");
-    //     }
-    // }, [game.mustCapturePiece]);
+    }, [game.move.from, index, cell.isPlayable, game.mustCapturePieces]);
 
     const dropPiece = (event) => {
         event.preventDefault();
         dispatchGame(getToAction(index));
         dispatchGame(movePieceAction(index));
         dispatchGame(getMustCapturePieceAction());
+        dispatchGame(getWinnerAction());
     };
 
     const dragEnter = () => {

@@ -13,7 +13,7 @@ export const getToAction = (to) => ({
 });
 
 export const getMustCapturePieceAction = () => ({
-    type: "GET_MUST_CAPTURE_PIECE",
+    type: "GET_MUST_CAPTURE_PIECES",
 });
 
 export const movePieceAction = (to) => ({
@@ -21,16 +21,6 @@ export const movePieceAction = (to) => ({
     to,
 });
 
-// export const getFromAction = (from) => ({
-//     type: "GET_FROM",
-//     from,
-// });
-
-// export const getToAction = (to) => ({
-//     type: "GET_TO",
-//     to,
-// });
-
-// export const movePieceAction = () => ({
-//     type: "MOVE_PIECE",
-// });
+export const getWinnerAction = () => ({
+    type: "GET_WINNER",
+});

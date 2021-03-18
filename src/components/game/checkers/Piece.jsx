@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { GameContext } from "../../../context/GameContext";
 import { getFromAction, getTurnAction } from "../../../actions/gameActions.js";
 
@@ -6,18 +6,12 @@ const Piece = ({ piece, index }) => {
     const { game, dispatchGame } = useContext(GameContext);
     const isDragabble =
         game.turn === piece.color &&
-        (game.mustCapturePiece.length === 0 ||
-            game.mustCapturePiece.includes(index));
+        (game.mustCapturePieces.length === 0 ||
+            game.mustCapturePieces.includes(index));
 
     useEffect(() => {
         dispatchGame(getTurnAction());
-
-        // if (game.mustCapturePiece !== null && game.mustCapturePiece === index) {
-        // console.log(game.mustCapturePiece, index);
-        // setIsDraggable(game.mustCapturePiece === index);
-        // }
-        // dispatchGame(getMustCapturePieceAction());
-    }, []);
+    }, [dispatchGame]);
 
     const dragPiece = () => {
         dispatchGame(getFromAction(index));

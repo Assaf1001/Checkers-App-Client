@@ -3,7 +3,8 @@ import {
     playTurn,
     board,
     getIsWhitePlayerTurn,
-    getMustCapturePiece,
+    getMustCapturePieces,
+    getWinner,
 } from "../components/game/checkers/logic";
 import {
     convertLogicBoardToUiBoard,
@@ -13,8 +14,9 @@ import {
 export const gameInitialState = {
     board: convertLogicBoardToUiBoard(board),
     turn: "white",
-    mustCapturePiece: [],
+    mustCapturePieces: [],
     move: { from: null, to: null },
+    winner: null,
 };
 
 const gameReducer = (state, action) => {
@@ -23,29 +25,16 @@ const gameReducer = (state, action) => {
             const newTurn = getIsWhitePlayerTurn() ? "white" : "black";
             return { ...state, turn: newTurn };
         case "GET_FROM":
-            // if (
-            // isLegalSelect(action.from) &&
-            // (state.mustCapturePiece === null ||
-            //     state.mustCapturePiece === action.from)
-            // ) {
             if (isLegalSelect(action.from)) {
                 return { ...state, move: { from: action.from, to: null } };
             }
             return state;
-        case "GET_MUST_CAPTURE_PIECE":
-            // const piece = getMustCapturePiece();
+        case "GET_MUST_CAPTURE_PIECES":
             const piecesArray = convertPieceArrayToIndexs(
-                getMustCapturePiece()
+                getMustCapturePieces()
             );
-            // if (piecesArray.length) {
-            // console.log("here");
-            // console.log(piece);
-            // const index = convertPieceLocationToIndex(piece);
-            return { ...state, mustCapturePiece: piecesArray };
-        // }
-        // return { ...state, mustCapturePiece: null };
+            return { ...state, mustCapturePieces: piecesArray };
         case "MOVE_PIECE":
-            console.log(state.move.from, action.to);
             if (state.move.from && action.to) {
                 const move = {
                     from: state.move.from,
@@ -60,6 +49,8 @@ const gameReducer = (state, action) => {
                 };
             }
             return state;
+        case "GET_WINNER":
+            return { ...state, winner: getWinner() };
         default:
             return state;
     }

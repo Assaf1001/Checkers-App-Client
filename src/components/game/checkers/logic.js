@@ -5,32 +5,81 @@ class Piece {
     }
 }
 
-// prettier-ignore
-export const board = [
-    [undefined,new Piece(false),undefined,null,undefined,new Piece(false),undefined,new Piece(false)],
-    [new Piece(false),undefined,null,undefined,new Piece(false),undefined,null,undefined],
-    [undefined,null,undefined,new Piece(false),undefined,null,undefined,null],
-    [null,undefined,null,undefined,null,undefined,new Piece(false),undefined],
-    [undefined,new Piece(false),undefined,null,undefined,null,undefined,null],
-    [new Piece(true),undefined,null,undefined,new Piece(true),undefined,new Piece(true),undefined],
-    [undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true)],
-    [null,undefined,new Piece(true),undefined,null,undefined,new Piece(true),undefined],
-]
-// export const board = [
-//     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
-//     [new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined],
-//     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
-//     [null,undefined,null,undefined,null,undefined,null,undefined],
-//     [undefined,null,undefined,null,undefined,null,undefined,null],
-//     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
-//     [undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true)],
-//     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
-// ]
-
-let isWhitePlayerTurn = false;
+let isWhitePlayerTurn = true;
+let winner = null;
 let mustCapturePieces = [];
 
+// prettier-ignore
+export const board = [
+    [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
+    [new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined],
+    [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
+    [null,undefined,null,undefined,null,undefined,null,undefined],
+    [undefined,null,undefined,null,undefined,null,undefined,null],
+    [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
+    [undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true)],
+    [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
+]
+
 export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
+
+export const getWinner = () => winner;
+
+export const getMustCapturePieces = () => mustCapturePieces;
+
+export const isLegalSelect = (location) => {
+    const { row, column } = convertLocationToRowAndColum(location);
+    if (mustCapturePieces.length !== 0)
+        for (let location of mustCapturePieces) {
+            if (location.row === row && location.column === column) return true;
+        }
+    else {
+        return (
+            board[row][column] !== null &&
+            isWhitePlayerTurn === board[row][column].isWhite
+        );
+    }
+};
+
+// prettier-ignore
+export const findMustCapturePieces =()=>{
+    const piecesCanCaptureArray = []
+    for (let row = 0;row<8;row++){
+        for (let column=0 ; column<8;column++){
+            if (board[row][column] == null || board[row][column].isWhite !== isWhitePlayerTurn) continue
+                if(board[row][column].isKing)
+                    if(isKingCanCapture(row,column)) piecesCanCaptureArray.push ({row,column})
+                
+                if (isPieceCanCapture(row,column)) piecesCanCaptureArray.push ({row,column})
+        }
+    }
+    return piecesCanCaptureArray
+}
+
+export const playTurn = (move) => {
+    const from = convertLocationToRowAndColum(move.from);
+    const to = convertLocationToRowAndColum(move.to);
+    if (mustCapturePieces.length === 0 || isLegalSelect(move.from)) {
+        if (mustCapturePieces.length === 0 && isLegalMove({ from, to })) {
+            executeMove({ from, to });
+            switchTurn();
+            mustCapturePieces = [];
+        } else if (isCaptureMove({ from, to })) {
+            executeCapture({ from, to });
+            mustCapturePieces = [];
+            if (
+                isPieceCanCapture(to.row, to.column) ||
+                isKingCanCapture(to.row, to.column)
+            )
+                mustCapturePieces.push(to);
+            if (mustCapturePieces.length === 0) switchTurn();
+        }
+        if (mustCapturePieces.length === 0)
+            mustCapturePieces = findMustCapturePieces();
+        isGameOver();
+    }
+    return board;
+};
 
 const switchTurn = () => {
     isWhitePlayerTurn = !isWhitePlayerTurn;
@@ -119,72 +168,60 @@ const isKingCanCapture = (row,column)=>{
         )
 }
 
-// const isDoubleCaptureActive = ({ row, column }) => {
-//     // if(mustCapturePieces === null ) return true
-
-//     return (
-//         mustCapturePieces[0].row === row &&
-//         mustCapturePieces[0].column === column
-//     );
-// };
-
-export const getMustCapturePiece = () => mustCapturePieces;
-
 // prettier-ignore
-export const findMustCapturePiece =()=>{
-    const piecesCanCaptureArray = []
-    for (let row = 0;row<8;row++){
-        for (let column=0 ; column<8;column++){
-            if (board[row][column] == null || board[row][column].isWhite !== isWhitePlayerTurn) continue
-                if(board[row][column].isKing)
-                    if(isKingCanCapture(row,column)) piecesCanCaptureArray.push ({row,column})
-                
-                if (isPieceCanCapture(row,column)) piecesCanCaptureArray.push ({row,column})
-        }
-    }
-    return piecesCanCaptureArray
+const isPieceCanMove = (row,column)=>{
+    return ( 
+        ((board[row][column].isWhite ? row-1>=0 : row+1<=7) && column-1>=0 && 
+        board[board[row][column].isWhite ? row - 1 : row + 1][column - 1] === null) ||
+        ((board[row][column].isWhite ? row-1>=0 : row+1<=7) && column+1<=7 &&
+        board[board[row][column].isWhite ? row - 1 : row + 1][column + 1] == null)
+    )
 }
 
-export const isLegalSelect = (location) => {
-    const { row, column } = convertLocationToRowAndColum(location);
-    console.log(row, column);
-    if (mustCapturePieces.length !== 0)
-        for (let location of mustCapturePieces) {
-            if (location.row === row && location.column === column) return true;
-        }
-    else {
-        return (
-            board[row][column] !== null &&
-            isWhitePlayerTurn === board[row][column].isWhite
-        );
-    }
-};
+// prettier-ignore
+const isKingCanMove = (row,column)=>{
+    return ( 
+        (row-1>=0 && column-1>=0 && board[row - 1][column - 1] === null) ||
+        (row-1>=0 && column+1<=7 && board[row - 1][column + 1] === null) ||
+        (row+2<=7 && column-1>=0 && board[row + 1][column - 1] === null) ||
+        (row+1<=7 && column+1<=7 && board[row + 1][column + 1] === null)
+    )
+}
 
-// export const isLegalDestination = (move) => {
-//     if (move.from === null || move.from === move.to) return false;
-//     const to = convertLocationToRowAndColum(move.to);
-//     return board[to.row][to.column] === null;
-// };
+const isDraw = (whiteKings, blackKings) =>
+    (whiteKings === 1 && blackKings <= 2) ||
+    (whiteKings <= 2 && blackKings === 1);
 
-export const playTurn = (move) => {
-    const from = convertLocationToRowAndColum(move.from);
-    const to = convertLocationToRowAndColum(move.to);
-    if (mustCapturePieces.length === 0 || isLegalSelect(move.from)) {
-        mustCapturePieces = [];
-        if (isLegalMove({ from, to })) {
-            executeMove({ from, to });
-            switchTurn();
-        } else if (isCaptureMove({ from, to })) {
-            executeCapture({ from, to });
-            if (
-                isPieceCanCapture(to.row, to.column) ||
-                isKingCanCapture(to.row, to.column)
-            )
-                mustCapturePieces.push(to);
-            if (mustCapturePieces.length === 0) switchTurn();
+// prettier-ignore
+const isGameOver = () => {
+    let whitePieces = 0,
+        blackPieces = 0,
+        whiteKings = 0,
+        blackKings = 0;
+
+    for (let row = 0; row < 8; row++) {
+        for (let column = 0; column < 8; column++) {
+            if (board[row][column] == null) continue;
+
+            if (board[row][column].isWhite && (isPieceCanMove(row, column) || isPieceCanCapture(row, column))) 
+                whitePieces++;
+            else if (board[row][column].isWhite && board[row][column].isKing && (isKingCanMove(row, column) || isKingCanCapture(row, column)))
+                whiteKings++;
+            else if (!board[row][column].isWhite && (isPieceCanMove(row, column) || isPieceCanCapture(row, column))) 
+                blackPieces++;
+            else if (!board[row][column].isWhite && board[row][column].isKing && (isKingCanMove(row, column) || isKingCanCapture(row, column)))
+                blackKings++;
         }
-        if (mustCapturePieces.length === 0)
-            mustCapturePieces = findMustCapturePiece();
     }
-    return board;
+
+    if(whitePieces === 0 && whiteKings === 0){
+        winner = "black"
+        return true
+    }else if(blackPieces === 0 && blackKings === 0){
+        winner = 'white'
+    }else if(isDraw(whiteKings,blackKings)){
+        winner = 'draw'
+    }
+
+    return false
 };
