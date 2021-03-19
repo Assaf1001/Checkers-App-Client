@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { GameContext } from "../../../context/GameContext";
 import { getFromAction, getTurnAction } from "../../../actions/gameActions.js";
 
-const Piece = ({ piece, index }) => {
+const Piece = ({ piece, index, isDesktopMode }) => {
     const { game, dispatchGame } = useContext(GameContext);
     const isDragabble =
         game.turn === piece.color &&
@@ -17,17 +17,30 @@ const Piece = ({ piece, index }) => {
         dispatchGame(getFromAction(index));
     };
 
-    // const handleClick = (event) => {
-    //     event.stopPropagation();
-    //     dispatchGame(getFromAction(index));
-    // };
+    const handleClick = (event) => {
+        event.stopPropagation();
+        dispatchGame(getFromAction(index));
+    };
 
     return (
-        <div
-            draggable={isDragabble}
-            onDragStart={dragPiece}
-            className={piece.color === "black" ? "black-piece" : "white-piece"}
-        ></div>
+        <>
+            {isDesktopMode ? (
+                <div
+                    draggable={isDragabble}
+                    onDragStart={dragPiece}
+                    className={
+                        piece.color === "black" ? "black-piece" : "white-piece"
+                    }
+                ></div>
+            ) : (
+                <div
+                    onClick={handleClick}
+                    className={
+                        piece.color === "black" ? "black-piece" : "white-piece"
+                    }
+                ></div>
+            )}
+        </>
     );
 };
 

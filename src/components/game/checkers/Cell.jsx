@@ -8,7 +8,7 @@ import {
 } from "../../../actions/gameActions";
 import Piece from "./Piece";
 
-const Cell = ({ cell, index }) => {
+const Cell = ({ cell, index, isDesktopMode }) => {
     const { game, dispatchGame } = useContext(GameContext);
 
     const [className, setClassName] = useState(
@@ -17,7 +17,6 @@ const Cell = ({ cell, index }) => {
 
     useEffect(() => {
         if (game.mustCapturePieces.includes(index)) {
-            // setClassName("dark-cell" + " highlighted-from");
             setClassName((current) => current + " highlighted-from");
         } else if (game.move.from === index) {
             setClassName((currunt) => currunt + " highlighted-from");
@@ -50,21 +49,43 @@ const Cell = ({ cell, index }) => {
         event.preventDefault();
     };
 
-    // const handleClick = () => {
-    //     dispatchGame(getToAction(index));
-    //     dispatchGame(movePieceAction(index));
-    // };
+    const handleClick = () => {
+        dispatchGame(getToAction(index));
+        dispatchGame(movePieceAction(index));
+        dispatchGame(getMustCapturePieceAction());
+        dispatchGame(getWinnerAction());
+    };
 
     return (
-        <div
-            onDrop={dropPiece}
-            onDragEnter={dragEnter}
-            onDragLeave={drapLeave}
-            onDragOver={dragOver}
-            className={className}
-        >
-            {cell.piece && <Piece piece={cell.piece} index={index} />}
-        </div>
+        <>
+            {isDesktopMode ? (
+                <div
+                    onDrop={dropPiece}
+                    onDragEnter={dragEnter}
+                    onDragLeave={drapLeave}
+                    onDragOver={dragOver}
+                    className={className}
+                >
+                    {cell.piece && (
+                        <Piece
+                            piece={cell.piece}
+                            index={index}
+                            isDesktopMode={isDesktopMode}
+                        />
+                    )}
+                </div>
+            ) : (
+                <div onClick={handleClick} className={className}>
+                    {cell.piece && (
+                        <Piece
+                            piece={cell.piece}
+                            index={index}
+                            isDesktopMode={isDesktopMode}
+                        />
+                    )}
+                </div>
+            )}
+        </>
     );
 };
 

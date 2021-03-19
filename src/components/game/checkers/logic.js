@@ -8,6 +8,7 @@ class Piece {
 let isWhitePlayerTurn = true;
 let winner = null;
 let mustCapturePieces = [];
+let isDoubleCaptureActive = false;
 
 // prettier-ignore
 export const board = [
@@ -67,11 +68,15 @@ export const playTurn = (move) => {
         } else if (isCaptureMove({ from, to })) {
             executeCapture({ from, to });
             mustCapturePieces = [];
+            isDoubleCaptureActive = false;
             if (
                 isPieceCanCapture(to.row, to.column) ||
                 isKingCanCapture(to.row, to.column)
-            )
+            ) {
                 mustCapturePieces.push(to);
+                isDoubleCaptureActive = true;
+                console.log(isDoubleCaptureActive);
+            }
             if (mustCapturePieces.length === 0) switchTurn();
         }
         if (mustCapturePieces.length === 0)
@@ -114,7 +119,7 @@ const promotePiece = ({ to }) => {
 
 // prettier-ignore
 const getMovementDirections = ({ from, to }) => {
-    const vertical = board[from.row][from.column].isKing ? Math.abs(from.row - to.row) :
+    const vertical = board[from.row][from.column].isKing || isDoubleCaptureActive ? Math.abs(from.row - to.row) :
         (isWhitePlayerTurn ? from.row - to.row : to.row - from.row)
     const horizontal = Math.abs(from.column - to.column);
     return {vertical,horizontal}   
@@ -132,11 +137,14 @@ const isCaptureMove = ({from,to}) => {
     if(vertical !== 2 || horizontal !== 2) return false
 
     return (
-        (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1] && 
-        board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column + 1].isWhite === !isWhitePlayerTurn ) ||
-        (board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1] &&
-        board[isWhitePlayerTurn ? to.row + 1 : to.row - 1][to.column - 1].isWhite === !isWhitePlayerTurn ) ||
-        board[from.row][from.column].isKing
+        (board[to.row + 1][to.column + 1] && 
+        board[to.row + 1][to.column + 1].isWhite === !isWhitePlayerTurn ) ||
+        (board[to.row - 1][to.column + 1] && 
+        board[to.row - 1][to.column + 1].isWhite === !isWhitePlayerTurn ) ||
+        (board[to.row + 1][to.column - 1] &&
+        board[to.row + 1][to.column - 1].isWhite === !isWhitePlayerTurn ) ||
+        (board[to.row - 1][to.column - 1] &&
+        board[to.row - 1][to.column - 1].isWhite === !isWhitePlayerTurn ) 
     )
 }
 
