@@ -5,11 +5,11 @@ import {
     getIsWhitePlayerTurn,
     getMustCapturePieces,
     getWinner,
-} from "../components/game/checkers/logic";
+} from "../game/logic";
 import {
     convertLogicBoardToUiBoard,
     convertPieceArrayToIndexs,
-} from "./gameUtils";
+} from "../game/utils";
 
 export const gameInitialState = {
     board: convertLogicBoardToUiBoard(board),

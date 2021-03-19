@@ -25,14 +25,6 @@ const Cell = ({ cell, index, isDesktopMode }) => {
         }
     }, [game.move.from, index, cell.isPlayable, game.mustCapturePieces]);
 
-    const dropPiece = (event) => {
-        event.preventDefault();
-        dispatchGame(getToAction(index));
-        dispatchGame(movePieceAction(index));
-        dispatchGame(getMustCapturePieceAction());
-        dispatchGame(getWinnerAction());
-    };
-
     const dragEnter = () => {
         if (game.move.from !== index && cell.isPlayable && !cell.piece) {
             setClassName((current) => current + " highlighted-to");
@@ -47,6 +39,14 @@ const Cell = ({ cell, index, isDesktopMode }) => {
 
     const dragOver = (event) => {
         event.preventDefault();
+    };
+
+    const dropPiece = (event) => {
+        event.preventDefault();
+        dispatchGame(getToAction(index));
+        dispatchGame(movePieceAction(index));
+        dispatchGame(getMustCapturePieceAction());
+        dispatchGame(getWinnerAction());
     };
 
     const handleClick = () => {

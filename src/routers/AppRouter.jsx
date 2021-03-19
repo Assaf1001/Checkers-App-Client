@@ -10,7 +10,6 @@ import HomePage from "../components/home/HomePage.jsx";
 import NotFoundPage from "../components/main/NotFoundPage.jsx";
 import GamePage from "../components/game/GamePage.jsx";
 import LobbyPage from "../components/lobby/LobbyPage.jsx";
-import Ui from "../components/game/checkers/Ui.jsx";
 import GameContextProvider from "../context/GameContext.js";
 
 const AppRouter = () => (
@@ -26,9 +25,9 @@ const AppRouter = () => (
                 <PublicRoute path="/login" component={LoginPage} />
                 <PrivateRoute path="/lobby" component={LobbyPage} />
 
-                <PrivateRoute path="/game/:id" component={GamePage} />
+                {/* <PrivateRoute path="/game/:id" component={GamePage} /> */}
                 <GameContextProvider>
-                    <Route path="/ui" component={Ui} />
+                    <Route path="/game/:id" component={GamePage} />
                 </GameContextProvider>
 
                 <Route component={NotFoundPage} />
