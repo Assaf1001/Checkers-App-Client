@@ -56,8 +56,7 @@ const LoginForm = (props) => {
 
         logIn({ email, password })
             .then((userData) => {
-                dispatchUserData(loginAction(userData));
-                console.log(userData);
+                dispatchUserData(loginAction(userData.user, userData.token));
                 saveUserOnCookie(userData);
                 history.push("/lobby");
             })

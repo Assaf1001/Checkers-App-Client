@@ -4,23 +4,21 @@ const signUpURL = `${process.env.REACT_APP_DB}/users/signup`;
 const logInURL = `${process.env.REACT_APP_DB}/users/login`;
 const userURL = `${process.env.REACT_APP_DB}/users`;
 
-export const singUp = async ({ name, email, password }) => {
+export const singUp = async ({ userName, email, password }) => {
     try {
-        const res = await Axios.post(signUpURL, { name, email, password });
+        const res = await Axios.post(signUpURL, { userName, email, password });
 
         return {
             token: res.data.token,
             user: {
-                name: res.data.user.name,
+                userName: res.data.user.userName,
                 email: res.data.user.email,
                 level: res.data.user.level,
                 rank: res.data.user.rank,
             },
         };
     } catch (err) {
-        if (err.message.includes(400)) {
-            throw new Error("Email exist"); ///////
-        }
+        throw new Error(err.response.data.message);
     }
 };
 
@@ -31,7 +29,7 @@ export const logIn = async ({ email, password }) => {
         return {
             token: res.data.token,
             user: {
-                name: res.data.user.name,
+                userName: res.data.user.userName,
                 email: res.data.user.email,
                 level: res.data.user.level,
                 rank: res.data.user.rank,
@@ -81,7 +79,7 @@ export const editDetails = async (update, token) => {
         return {
             token: res.data.token,
             user: {
-                name: res.data.user.name,
+                userName: res.data.user.name,
                 email: res.data.user.email,
             },
         };

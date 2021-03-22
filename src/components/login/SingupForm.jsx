@@ -19,7 +19,7 @@ const SingupForm = (props) => {
         false,
     ]);
 
-    const [name, setName] = useState("");
+    const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRepeated, setPasswordRepeated] = useState("");
@@ -89,9 +89,14 @@ const SingupForm = (props) => {
         return isEmailValid && isPasswordValid && isPasswordRepeatedValid;
     };
 
-    const onInputMame = (event) => {
-        const newName = event.target.value.trim();
-        validateInput(newName, 0, setName, "Please enter your name");
+    const onInputUserName = (event) => {
+        const newUserName = event.target.value.trim();
+        validateInput(
+            newUserName,
+            0,
+            setUserName,
+            "Please enter your user name"
+        );
     };
 
     const onInputEmail = (event) => {
@@ -118,24 +123,24 @@ const SingupForm = (props) => {
         event.preventDefault();
 
         if (onSubmitIsValidInputs()) {
-            singUp({ name, email, password })
+            singUp({ userName, email, password })
                 .then((userData) => {
-                    dispatchUserData(loginAction(userData));
-                    console.log(userData);
+                    dispatchUserData(
+                        loginAction(userData.user, userData.token)
+                    );
                     saveUserOnCookie(userData);
                     history.push("/lobby");
                 })
                 .catch((err) => {
-                    if (err.message === "Email exist") {
+                    if (err.message.includes("User name")) {
+                        setInputClasses(["input-invalid", "", "", ""]);
+                        setInvalidMessages([err.message, "", "", ""]);
+                        setValidInputs([false, true, true, true]);
+                    } else if (err.message.includes("Email")) {
                         setInputClasses(["", "input-invalid", "", ""]);
-                        setInvalidMessages([
-                            "",
-                            "Email is already in use!",
-                            "",
-                            "",
-                        ]);
+                        setInvalidMessages(["", err.message, "", ""]);
                         setValidInputs([true, false, true, true]);
-                    }
+                    } else console.log(err);
                 });
         }
     };
@@ -144,12 +149,12 @@ const SingupForm = (props) => {
         <div className="login-form">
             <h3>SIGN UP</h3>
             <form onSubmit={onSubmitForm}>
-                <label htmlFor="name">Enter your name</label>
+                <label htmlFor="userName">Pick a user name</label>
                 <input
-                    id="name"
-                    placeholder="Name"
+                    id="userName"
+                    placeholder="User name"
                     className={inputClasses[0]}
-                    onChange={onInputMame}
+                    onChange={onInputUserName}
                 />
                 {invalidMessages[0] !== "" && (
                     <div className="invalid-message">{invalidMessages[0]}</div>
