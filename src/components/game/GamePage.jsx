@@ -7,11 +7,14 @@ import { GameContext } from "../../context/GameContext";
 import {
     getBoardSokcetAction,
     setOpponentAction,
+    setUserColor,
 } from "../../actions/gameActions";
+import { LoginContext } from "../../context/LoginContext";
 
 const GamePage = (props) => {
     const history = useHistory();
 
+    const { userData } = useContext(LoginContext);
     const { game, dispatchGame } = useContext(GameContext);
 
     const gameId = props.match.params.id;
@@ -44,8 +47,14 @@ const GamePage = (props) => {
         // console.log(room);
         // });
         socket.emit("sendRoom");
-        socket.on("receiveRoom", (room) => {
-            dispatchGame(setOpponentAction(room));
+        socket.on("receiveRoom", ({ room, opponent }) => {
+            console.log("receiveRoom");
+            dispatchGame(setOpponentAction(opponent));
+            if (room.player1.userName === userData.user.userName) {
+                dispatchGame(setUserColor("white"));
+            } else {
+                dispatchGame(setUserColor("black"));
+            }
         });
 
         // socket.on("receiveBoard", (board) => {

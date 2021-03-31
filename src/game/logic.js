@@ -26,6 +26,11 @@ export const updateBoard = (newBoard) => {
     board = newBoard;
 };
 
+export const updateMustCapturePieces = (newMustCapturePieces) => {
+    console.log(mustCapturePieces);
+    mustCapturePieces = newMustCapturePieces;
+};
+
 export const setIsWhitePlayerTurn = (turn) => {
     if (turn === "white") isWhitePlayerTurn = true;
     else isWhitePlayerTurn = false;
@@ -37,11 +42,9 @@ export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
 
 export const getWinner = () => winner;
 
-export const getMustCapturePieces = () => mustCapturePieces;
-
 export const isLegalSelect = (location) => {
     const { row, column } = convertLocationToRowAndColum(location);
-    console.log(isWhitePlayerTurn);
+    console.log(row, column, mustCapturePieces);
     if (mustCapturePieces.length !== 0)
         for (let location of mustCapturePieces) {
             if (location.row === row && location.column === column) return true;
@@ -94,7 +97,7 @@ export const playTurn = (move) => {
             mustCapturePieces = findMustCapturePieces();
         isGameOver();
     }
-    return board;
+    return { board, mustCapturePieces };
 };
 
 const switchTurn = () => {

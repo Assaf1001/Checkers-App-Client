@@ -3,9 +3,14 @@
 //     room,
 // });
 
-export const setOpponentAction = (id) => ({
+export const setOpponentAction = (opponent) => ({
     type: "SET_OPPONENT_SOCKET",
-    id,
+    opponent,
+});
+
+export const setUserColor = (userColor) => ({
+    type: "SET_USER_COLOR",
+    userColor,
 });
 
 export const getBoardSokcetAction = (state) => ({
@@ -13,8 +18,8 @@ export const getBoardSokcetAction = (state) => ({
     state,
 });
 
-export const getTurnAction = () => ({
-    type: "GET_TURN",
+export const setTurnAction = () => ({
+    type: "SET_TURN",
 });
 
 export const getFromAction = (from) => ({
@@ -38,4 +43,8 @@ export const movePieceAction = (to) => ({
 
 export const getWinnerAction = () => ({
     type: "GET_WINNER",
+});
+
+export const sendStateAction = () => ({
+    type: "SEND_STATE",
 });

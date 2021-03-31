@@ -10,6 +10,7 @@ const Piece = ({ piece, index, isDesktopMode }) => {
     const { game, dispatchGame } = useContext(GameContext);
     const isDragabble =
         game.turn === piece.color &&
+        game.turn === game.userColor &&
         (game.mustCapturePieces.length === 0 ||
             game.mustCapturePieces.includes(index));
 

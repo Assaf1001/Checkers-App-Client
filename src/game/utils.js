@@ -63,25 +63,3 @@ export const convertUiBoardToLogicBoard = (board) => {
     }
     return newBoard;
 };
-
-export const convertUndefinedToString = (board) => {
-    for (let row = 0; row < 8; row++) {
-        for (let column = 0; column < 8; column++) {
-            if (board[row][column] === undefined)
-                board[row][column] = "undefined";
-        }
-    }
-
-    return board;
-};
-
-export const convertStringToUndefined = (board) => {
-    for (let row = 0; row < 8; row++) {
-        for (let column = 0; column < 8; column++) {
-            if (board[row][column] === "undefined")
-                board[row][column] = undefined;
-        }
-    }
-    console.log(board);
-    return board;
-};
