@@ -4,11 +4,19 @@ const URL = process.env.REACT_APP_SOCKET_URL;
 const socket = io(URL, { withCredentials: true, autoConnect: false });
 // const socket = io(URL, { withCredentials: true });
 
-export const connectUser = (userName) => {
+export const connectUser = (userName, dispatchUserData, setIdAction) => {
     socket.on("connect", () => {});
     socket.connect();
     socket.emit("addUser", userName);
 };
+// export const connectUser = (userName, dispatchUserData, setIdAction) => {
+//     socket.on("connect", () => {});
+//     socket.connect();
+//     socket.emit("addUser", userName);
+//     socket.on("getUser", (user) => {
+//         dispatchUserData(setIdAction(user));
+//     });
+// };
 
 export const disconnectUser = () => {
     socket.on("disconnect", () => {

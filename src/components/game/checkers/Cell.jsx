@@ -7,6 +7,12 @@ import {
     movePieceAction,
 } from "../../../actions/gameActions";
 import Piece from "./Piece";
+import socket from "../../../socket.io/socket.io";
+import { getBoard } from "../../../game/logic";
+import {
+    convertUiBoardToLogicBoard,
+    convertUndefinedToString,
+} from "../../../game/utils";
 
 const Cell = ({ cell, index, isDesktopMode }) => {
     const { game, dispatchGame } = useContext(GameContext);
@@ -47,6 +53,8 @@ const Cell = ({ cell, index, isDesktopMode }) => {
         dispatchGame(movePieceAction(index));
         dispatchGame(getMustCapturePieceAction());
         dispatchGame(getWinnerAction());
+
+        // socket.emit("sendBoard", getBoard(), game.opponent.id);
     };
 
     const handleClick = () => {
@@ -54,6 +62,11 @@ const Cell = ({ cell, index, isDesktopMode }) => {
         dispatchGame(movePieceAction(index));
         dispatchGame(getMustCapturePieceAction());
         dispatchGame(getWinnerAction());
+        // const board = getBoard();
+        // const jsonboard = convertUiBoardToLogicBoard(game.board);
+        // console.log(jsonboard);
+        console.log(game.board);
+        // socket.emit("sendBoard", game.board, game.opponent.id);
     };
 
     return (

@@ -1,3 +1,18 @@
+// export const setRoomAction = (room) => ({
+//     type: "SET_ROOM",
+//     room,
+// });
+
+export const setOpponentAction = (id) => ({
+    type: "SET_OPPONENT_SOCKET",
+    id,
+});
+
+export const getBoardSokcetAction = (state) => ({
+    type: "GET_BOARD_SOCKET",
+    state,
+});
+
 export const getTurnAction = () => ({
     type: "GET_TURN",
 });

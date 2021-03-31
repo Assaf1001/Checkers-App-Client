@@ -1,6 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { GameContext } from "../../../context/GameContext";
-import { getFromAction, getTurnAction } from "../../../actions/gameActions.js";
+import {
+    getBoardSokcetAction,
+    getFromAction,
+    getTurnAction,
+} from "../../../actions/gameActions.js";
 
 const Piece = ({ piece, index, isDesktopMode }) => {
     const { game, dispatchGame } = useContext(GameContext);
@@ -9,9 +13,10 @@ const Piece = ({ piece, index, isDesktopMode }) => {
         (game.mustCapturePieces.length === 0 ||
             game.mustCapturePieces.includes(index));
 
-    useEffect(() => {
-        dispatchGame(getTurnAction());
-    }, [dispatchGame]);
+    // useEffect(() => {
+    //     // dispatchGame(getBoardSokcetAction());
+    //     dispatchGame(getTurnAction());
+    // }, [dispatchGame]);
 
     const dragPiece = () => {
         dispatchGame(getFromAction(index));

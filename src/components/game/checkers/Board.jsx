@@ -1,9 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
+import {
+    getBoardSokcetAction,
+    getTurnAction,
+} from "../../../actions/gameActions";
 import { GameContext } from "../../../context/GameContext";
+import {
+    getIsWhitePlayerTurn,
+    setIsWhitePlayerTurn,
+} from "../../../game/logic";
+import socket from "../../../socket.io/socket.io";
 import Cell from "./Cell";
 
 const Board = () => {
-    const { game } = useContext(GameContext);
+    const { game, dispatchGame } = useContext(GameContext);
     const [isDesktopMode, setIsDesktopMode] = useState(false);
 
     const onResizeDesktopMode = () => {
@@ -17,6 +26,21 @@ const Board = () => {
     useEffect(() => {
         onResizeDesktopMode();
     }, [isDesktopMode]);
+
+    useEffect(() => {
+        // dispatchGame(getBoardSokcetAction());
+    }, [dispatchGame]);
+
+    useEffect(() => {
+        socket.on("receiveBoard", (state) => {
+            console.log("receiveBoard");
+            // console.log(state);
+            // setIsWhitePlayerTurn(game.turn);
+            dispatchGame(getBoardSokcetAction(state));
+            dispatchGame(getTurnAction());
+            // console.log(game.turn);
+        });
+    }, []);
 
     return (
         <div className="board">

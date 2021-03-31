@@ -1,7 +1,7 @@
-class Piece {
-    constructor(isWhite) {
+export class Piece {
+    constructor(isWhite, isKing = false) {
         this.isWhite = isWhite;
-        this.isKing = false;
+        this.isKing = isKing;
     }
 }
 
@@ -11,7 +11,7 @@ let mustCapturePieces = [];
 let isDoubleCaptureActive = false;
 
 // prettier-ignore
-export const board = [
+export let board = [
     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
     [new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined],
     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
@@ -22,6 +22,17 @@ export const board = [
     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
 ]
 
+export const updateBoard = (newBoard) => {
+    board = newBoard;
+};
+
+export const setIsWhitePlayerTurn = (turn) => {
+    if (turn === "white") isWhitePlayerTurn = true;
+    else isWhitePlayerTurn = false;
+};
+
+export const getBoard = () => board;
+
 export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
 
 export const getWinner = () => winner;
@@ -30,6 +41,7 @@ export const getMustCapturePieces = () => mustCapturePieces;
 
 export const isLegalSelect = (location) => {
     const { row, column } = convertLocationToRowAndColum(location);
+    console.log(isWhitePlayerTurn);
     if (mustCapturePieces.length !== 0)
         for (let location of mustCapturePieces) {
             if (location.row === row && location.column === column) return true;

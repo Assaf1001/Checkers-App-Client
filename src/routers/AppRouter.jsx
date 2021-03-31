@@ -26,12 +26,11 @@ const AppRouter = () => (
                 <PublicRoute path="/login" component={LoginPage} />
                 <LobbyContextProvider>
                     <PrivateRoute path="/lobby" component={LobbyPage} />
-                </LobbyContextProvider>
 
-                {/* <PrivateRoute path="/game/:id" component={GamePage} /> */}
-                <GameContextProvider>
-                    <Route path="/game/:id" component={GamePage} />
-                </GameContextProvider>
+                    <GameContextProvider>
+                        <PrivateRoute path="/game/:id" component={GamePage} />
+                    </GameContextProvider>
+                </LobbyContextProvider>
 
                 <Route component={NotFoundPage} />
             </Switch>

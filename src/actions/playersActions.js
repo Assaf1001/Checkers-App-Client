@@ -1,4 +1,5 @@
-export const setPlayersAction = (players) => ({
+export const setPlayersAction = (player, playersList) => ({
     type: "SET_PLAYERS",
-    players,
+    player,
+    playersList,
 });
