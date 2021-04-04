@@ -8,13 +8,13 @@ export const setOpponentAction = (opponent) => ({
     opponent,
 });
 
-export const setUserColor = (userColor) => ({
+export const setUserColorAction = (userColor) => ({
     type: "SET_USER_COLOR",
     userColor,
 });
 
-export const getBoardSokcetAction = (state) => ({
-    type: "GET_BOARD_SOCKET",
+export const getStateFromSokcetAction = (state) => ({
+    type: "GET_STATE_SOCKET",
     state,
 });
 

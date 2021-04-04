@@ -1,10 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { GameContext } from "../../../context/GameContext";
-import {
-    getBoardSokcetAction,
-    getFromAction,
-    getTurnAction,
-} from "../../../actions/gameActions.js";
+import { getFromAction } from "../../../actions/gameActions.js";
 
 const Piece = ({ piece, index, isDesktopMode }) => {
     const { game, dispatchGame } = useContext(GameContext);
@@ -12,12 +8,7 @@ const Piece = ({ piece, index, isDesktopMode }) => {
         game.turn === piece.color &&
         game.turn === game.userColor &&
         (game.mustCapturePieces.length === 0 ||
-            game.mustCapturePieces.includes(index));
-
-    // useEffect(() => {
-    //     // dispatchGame(getBoardSokcetAction());
-    //     dispatchGame(getTurnAction());
-    // }, [dispatchGame]);
+            game.mustCapturePiecesIndexes.includes(index));
 
     const dragPiece = () => {
         dispatchGame(getFromAction(index));

@@ -17,14 +17,14 @@ const Cell = ({ cell, index, isDesktopMode }) => {
     );
 
     useEffect(() => {
-        if (game.mustCapturePieces.includes(index)) {
+        if (game.mustCapturePiecesIndexes.includes(index)) {
             setClassName((current) => current + " highlighted-from");
         } else if (game.move.from === index) {
             setClassName((currunt) => currunt + " highlighted-from");
         } else {
             setClassName(cell.isPlayable ? "light-cell" : "dark-cell");
         }
-    }, [game.move.from, index, cell.isPlayable, game.mustCapturePieces]);
+    }, [game.move.from, index, cell.isPlayable, game.mustCapturePiecesIndexes]);
 
     const dragEnter = () => {
         if (game.move.from !== index && cell.isPlayable && !cell.piece) {
@@ -59,6 +59,11 @@ const Cell = ({ cell, index, isDesktopMode }) => {
             dispatchGame(movePieceAction(index));
             dispatchGame(getMustCapturePieceAction());
             dispatchGame(getWinnerAction());
+            // console.log(game.winner);
+            // if (game.winner) {
+            //     console.log("here");
+            //     console.log(game.winner, "Is the winner");
+            // }
             dispatchGame(sendStateAction());
         }
     };

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
-    getBoardSokcetAction,
+    getStateFromSokcetAction,
     setTurnAction,
 } from "../../../actions/gameActions";
 import { GameContext } from "../../../context/GameContext";
@@ -24,15 +24,25 @@ const Board = () => {
     }, [isDesktopMode]);
 
     useEffect(() => {
-        socket.on("receiveBoard", (state) => {
-            dispatchGame(getBoardSokcetAction(state));
+        socket.on("receiveState", (state) => {
+            dispatchGame(getStateFromSokcetAction(state));
             dispatchGame(setTurnAction());
         });
-    }, []);
+    }, [dispatchGame]);
+
+    useEffect(() => {
+        if (game.winner) {
+            if (game.winner === "draw") {
+                console.log("Its a draw");
+            } else {
+                console.log(game.winner, "Is the winner");
+            }
+        }
+    }, [game.winner]);
 
     return (
         <div className="board">
-            {console.log(game)}
+            {/* {console.log(game)} */}
             {game.board.map((cell, i) => (
                 <Cell
                     key={i}

@@ -10,16 +10,28 @@ let winner = null;
 let mustCapturePieces = [];
 let isDoubleCaptureActive = false;
 
+// // prettier-ignore
+// export let board = [
+//     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
+//     [new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined],
+//     [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
+//     [null,undefined,null,undefined,null,undefined,null,undefined],
+//     [undefined,null,undefined,null,undefined,null,undefined,null],
+//     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
+//     [undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true)],
+//     [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
+// ]
+
 // prettier-ignore
 export let board = [
-    [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
-    [new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined],
-    [undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false),undefined,new Piece(false)],
+    [undefined,null,undefined,null,undefined,null,undefined,null],
     [null,undefined,null,undefined,null,undefined,null,undefined],
     [undefined,null,undefined,null,undefined,null,undefined,null],
-    [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
-    [undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true)],
-    [new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined,new Piece(true),undefined],
+    [null,undefined,null,undefined,null,undefined,null,undefined],
+    [undefined,null,undefined,new Piece(false),undefined,null,undefined,null],
+    [null,undefined,null,undefined,new Piece(true),undefined,null,undefined],
+    [undefined,null,undefined,null,undefined,null,undefined,null],
+    [null,undefined,null,undefined,null,undefined,null,undefined],
 ]
 
 export const updateBoard = (newBoard) => {
@@ -27,7 +39,6 @@ export const updateBoard = (newBoard) => {
 };
 
 export const updateMustCapturePieces = (newMustCapturePieces) => {
-    console.log(mustCapturePieces);
     mustCapturePieces = newMustCapturePieces;
 };
 
@@ -44,7 +55,6 @@ export const getWinner = () => winner;
 
 export const isLegalSelect = (location) => {
     const { row, column } = convertLocationToRowAndColum(location);
-    console.log(row, column, mustCapturePieces);
     if (mustCapturePieces.length !== 0)
         for (let location of mustCapturePieces) {
             if (location.row === row && location.column === column) return true;
@@ -253,8 +263,10 @@ const isGameOver = () => {
         return true
     }else if(blackPieces === 0 && blackKings === 0){
         winner = 'white'
+        return true
     }else if(isDraw(whiteKings,blackKings)){
         winner = 'draw'
+        return true
     }
 
     return false
