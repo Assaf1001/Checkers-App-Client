@@ -7,7 +7,6 @@ export const saveUserOnCookie = (userData) => {
     Cookies.set(USER_DATA, jsonUserData, {
         expires: 1,
         sameSite: "strict",
-        // secure: true,
     });
 };
 
@@ -17,8 +16,6 @@ export const deleteUserOnCookie = () =>
 export const getUserFromCookie = () => {
     const jsonUserData = Cookies.get(USER_DATA);
     if (jsonUserData === undefined) return null;
-
-    // console.log(JSON.parse(jsonUserData));
 
     return JSON.parse(jsonUserData);
 };

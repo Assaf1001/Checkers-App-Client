@@ -106,3 +106,35 @@ export const changePassword = async (
         throw new Error(err.response.data.message);
     }
 };
+
+export const updateRank = async (rankToAdd, token) => {
+    try {
+        const res = await Axios.patch(
+            `${userURL}/me/updateRank`,
+            { rankToAdd },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+
+        return res.data;
+    } catch (err) {
+        throw new Error(err.response.data.message);
+    }
+};
+
+export const updateLevel = async (newLevel, token) => {
+    try {
+        const res = await Axios.patch(
+            `${userURL}/me/updateLevel`,
+            { newLevel },
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+
+        return res.data;
+    } catch (err) {
+        throw new Error(err.response.data.message);
+    }
+};

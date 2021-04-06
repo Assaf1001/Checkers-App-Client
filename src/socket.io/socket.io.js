@@ -2,12 +2,11 @@ import { io } from "socket.io-client";
 
 const URL = process.env.REACT_APP_SOCKET_URL;
 const socket = io(URL, { withCredentials: true, autoConnect: false });
-// const socket = io(URL, { withCredentials: true });
 
-export const connectUser = (userName, dispatchUserData, setIdAction) => {
+export const connectUser = (user) => {
     socket.on("connect", () => {});
     socket.connect();
-    socket.emit("addUser", userName);
+    socket.emit("addUser", user);
 };
 // export const connectUser = (userName, dispatchUserData, setIdAction) => {
 //     socket.on("connect", () => {});

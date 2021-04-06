@@ -59,11 +59,6 @@ const Cell = ({ cell, index, isDesktopMode }) => {
             dispatchGame(movePieceAction(index));
             dispatchGame(getMustCapturePieceAction());
             dispatchGame(getWinnerAction());
-            // console.log(game.winner);
-            // if (game.winner) {
-            //     console.log("here");
-            //     console.log(game.winner, "Is the winner");
-            // }
             dispatchGame(sendStateAction());
         }
     };

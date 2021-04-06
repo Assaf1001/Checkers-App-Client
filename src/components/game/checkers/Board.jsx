@@ -30,16 +30,6 @@ const Board = () => {
         });
     }, [dispatchGame]);
 
-    useEffect(() => {
-        if (game.winner) {
-            if (game.winner === "draw") {
-                console.log("Its a draw");
-            } else {
-                console.log(game.winner, "Is the winner");
-            }
-        }
-    }, [game.winner]);
-
     return (
         <div className="board">
             {/* {console.log(game)} */}

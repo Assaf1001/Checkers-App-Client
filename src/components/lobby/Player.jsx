@@ -6,12 +6,11 @@ import {
     initAction,
     receiveInvitationAction,
 } from "../../actions/messagesActions";
-import InvitationModal from "./InvitationModal";
 
 const Player = ({ player }) => {
     const history = useHistory();
 
-    const { messages, dispatchMessages } = useContext(LobbyContext);
+    const { dispatchMessages } = useContext(LobbyContext);
 
     const onClickInvite = () => {
         socket.emit("sendInvitation", player.id);
@@ -45,11 +44,10 @@ const Player = ({ player }) => {
     return (
         <div>
             <h3>{player.userName}</h3>
+            <h3>Level: {player.level}</h3>
+            <h3>Rank: {player.rank}</h3>
             <p>{player.id}</p>
             <button onClick={onClickInvite}>Invite</button>
-            {messages.isInvitationActive && (
-                <InvitationModal player={messages.invitationFrom} />
-            )}
         </div>
     );
 };

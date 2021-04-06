@@ -1,16 +1,11 @@
-// export const setRoomAction = (room) => ({
-//     type: "SET_ROOM",
-//     room,
-// });
+export const setUserColorAction = (userColor) => ({
+    type: "SET_USER_COLOR",
+    userColor,
+});
 
 export const setOpponentAction = (opponent) => ({
     type: "SET_OPPONENT_SOCKET",
     opponent,
-});
-
-export const setUserColorAction = (userColor) => ({
-    type: "SET_USER_COLOR",
-    userColor,
 });
 
 export const getStateFromSokcetAction = (state) => ({
