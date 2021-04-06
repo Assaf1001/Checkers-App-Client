@@ -12,6 +12,7 @@ import NotFoundPage from "../components/main/NotFoundPage.jsx";
 import LoginPage from "../components/login/LoginPage.jsx";
 import LobbyPage from "../components/lobby/LobbyPage.jsx";
 import GamePage from "../components/game/GamePage.jsx";
+import LeaderBoardPage from "../components/leaderBoard/LeaderBoardPage.jsx";
 
 const AppRouter = () => (
     <BrowserRouter>
@@ -22,6 +23,7 @@ const AppRouter = () => (
                     <Redirect to="/home" component={HomePage} />
                 </Route>
                 <Route path="/home" component={HomePage} />
+                <Route path="/leaderBoard" component={LeaderBoardPage} />
 
                 <PublicRoute path="/login" component={LoginPage} />
                 <LobbyContextProvider>

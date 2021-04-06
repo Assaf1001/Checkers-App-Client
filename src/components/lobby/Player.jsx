@@ -46,7 +46,6 @@ const Player = ({ player }) => {
             <h3>{player.userName}</h3>
             <h3>Level: {player.level}</h3>
             <h3>Rank: {player.rank}</h3>
-            <p>{player.id}</p>
             <button onClick={onClickInvite}>Invite</button>
         </div>
     );

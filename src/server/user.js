@@ -1,5 +1,6 @@
 import Axios from "axios";
 
+const dbURL = process.env.REACT_APP_DB;
 const signUpURL = `${process.env.REACT_APP_DB}/users/signup`;
 const logInURL = `${process.env.REACT_APP_DB}/users/login`;
 const userURL = `${process.env.REACT_APP_DB}/users`;
@@ -119,7 +120,7 @@ export const updateRank = async (rankToAdd, token) => {
 
         return res.data;
     } catch (err) {
-        throw new Error(err.response.data.message);
+        throw new Error(err.response.data);
     }
 };
 
@@ -135,6 +136,16 @@ export const updateLevel = async (newLevel, token) => {
 
         return res.data;
     } catch (err) {
-        throw new Error(err.response.data.message);
+        throw new Error(err.response.data);
+    }
+};
+
+export const getLeaderBoard = async () => {
+    try {
+        const res = await Axios.get(`${dbURL}/leaderBoard`);
+
+        return res.data;
+    } catch (err) {
+        throw new Error(err.response.data);
     }
 };

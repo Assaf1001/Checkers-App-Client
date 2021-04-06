@@ -40,6 +40,11 @@ export const getWinnerAction = () => ({
     type: "GET_WINNER",
 });
 
+export const setWinnerAction = (winner) => ({
+    type: "SET_WINNER",
+    winner,
+});
+
 export const sendStateAction = () => ({
     type: "SEND_STATE",
 });

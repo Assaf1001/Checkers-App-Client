@@ -8,6 +8,7 @@ import {
     getBoard,
     setIsWhitePlayerTurn,
     updateMustCapturePieces,
+    setWinner,
 } from "../game/logic";
 import {
     convertLogicBoardToUiBoard,
@@ -80,6 +81,9 @@ const gameReducer = (state, action) => {
             return state;
         case "GET_WINNER":
             return { ...state, winner: getWinner() };
+        case "SET_WINNER":
+            setWinner(action.winner);
+            return { ...state, winner: action.winner };
         case "SEND_STATE":
             socket.emit(
                 "sendState",

@@ -5,7 +5,7 @@ import { GameContext } from "../../context/GameContext";
 import { LoginContext } from "../../context/LoginContext";
 import { saveUserOnCookie } from "../../cookies/cookies";
 import { updateLevel, updateRank } from "../../server/user";
-import socket from "../../socket.io/socket.io";
+// import socket from "../../socket.io/socket.io";
 
 const GameOverModal = () => {
     const history = useHistory();
@@ -80,13 +80,22 @@ const GameOverModal = () => {
     return (
         <div>
             <h1>Game Over</h1>
-            <h2>
-                {game.winner === "draw"
-                    ? "Its a Draw"
-                    : game.winner === game.userColor
-                    ? "You Win!!"
-                    : "You Loose!"}
-            </h2>
+
+            {game.winner === "draw" ? (
+                <p>Its a Draw</p>
+            ) : game.winner === game.userColor ? (
+                <p>
+                    You Win!! you gain{" "}
+                    {calculateRankToUpdate(
+                        userData.user.level,
+                        game.opponent.level
+                    )}{" "}
+                    points.
+                </p>
+            ) : (
+                <p>You Loose!</p>
+            )}
+
             {/* <button onClick={onClickPlayAgain}>Play again</button> */}
             <button onClick={onClickBackToLobby}>Back to lobby</button>
         </div>

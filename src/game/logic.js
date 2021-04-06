@@ -53,6 +53,10 @@ export const getIsWhitePlayerTurn = () => isWhitePlayerTurn;
 
 export const getWinner = () => winner;
 
+export const setWinner = (newWinner) => {
+    winner = newWinner;
+};
+
 export const isLegalSelect = (location) => {
     const { row, column } = convertLocationToRowAndColum(location);
     if (mustCapturePieces.length !== 0)
