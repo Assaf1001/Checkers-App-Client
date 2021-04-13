@@ -1,3 +1,10 @@
-@import "./base/base";
 @import "./base/settings";
+@import "./base/base";
+@import "./components/header";
+@import "./components/homePage";
+@import "./components/loginPage";
+@import "./components/lobbyPage";
+@import "./components/leaderBoardPage";
+@import "./components/invitationModal";
+@import "./components/game/gamePage";
 @import "./components/game/board";

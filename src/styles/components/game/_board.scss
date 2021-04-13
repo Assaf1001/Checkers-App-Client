@@ -1,9 +1,13 @@
 .board {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    width: 80vh;
-    height: 80vh;
-    outline: 5px solid black;
+    width: 60vh;
+    height: 60vh;
+    min-width: 60vh;
+    min-height: 60vh;
+    outline: 30px solid $opacity;
+    margin: 0 auto;
+    margin-bottom: 1rem;
 }
 
 .cell {
@@ -14,37 +18,75 @@
 
 .light-cell {
     @extend .cell;
-    background: #05423c;
+    background: #aa8976;
 }
 
 .dark-cell {
     @extend .cell;
-    background: #718f8c;
+    background: #f0e2d0;
 }
 
 .highlighted-from {
-    background: darken(#718f8c,15);
+    background: darken(#f0e2d0, 15);
 }
 
-.highlighted-to  {
-    background: lighten(#718f8c,15);
-
-    //background: lightblue;
+.highlighted-to {
+    background: lighten(#aa8976, 15);
 }
 
 .piece {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     transform: translate(0, 0);
     border-radius: 50%;
+    background-size: cover;
 }
 
 .black-piece {
     @extend .piece;
-    background: black;
+    background-image: url(../../../images/black.png);
 }
 
 .white-piece {
     @extend .piece;
-    background: white;
+    background-image: url(../../../images/white.png);
+}
+
+.black-king {
+    @extend .piece;
+    background-image: url(../../../images/blackKing.png);
+}
+
+.white-king {
+    @extend .piece;
+    background-image: url(../../../images/whiteKing.png);
+}
+
+@media (max-width: 1400px) {
+    .board {
+        width: 50vh;
+        height: 50vh;
+        min-width: 50vh;
+        min-height: 50vh;
+    }
+}
+
+@media (max-width: 1200px) {
+    .board {
+        width: 40vh;
+        height: 40vh;
+        min-width: 40vh;
+        min-height: 40vh;
+    }
+}
+
+@media (max-width: $tablet) {
+    .board {
+        width: 95vw;
+        height: 95vw;
+        min-width: 95vw;
+        min-height: 95vw;
+        margin-bottom: 0;
+        outline: none;
+    }
 }

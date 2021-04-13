@@ -30,8 +30,6 @@ const Player = ({ player }) => {
             });
 
             socket.on("receiveAcception", (room) => {
-                // if (opponent.id === socket.id) dispatchMessages(initAction());
-                // else console.log(opponent.userName, "Accept your challange");
                 dispatchMessages(initAction());
                 history.push(`/game/${room.id}`);
             });
@@ -42,8 +40,8 @@ const Player = ({ player }) => {
     }, [dispatchMessages, history]);
 
     return (
-        <div>
-            <h3>{player.userName}</h3>
+        <div className="player">
+            <h3>Username: {player.userName}</h3>
             <h3>Level: {player.level}</h3>
             <h3>Rank: {player.rank}</h3>
             <button onClick={onClickInvite}>Invite</button>

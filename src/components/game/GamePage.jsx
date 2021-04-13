@@ -9,12 +9,11 @@ import {
 } from "../../actions/gameActions";
 import socket, { disconnectUser } from "../../socket.io/socket.io";
 import Board from "./checkers/Board";
-import GameDetails from "./GameDetails";
 import GameOverModal from "./GameOverModal";
-// import { useHistory } from "react-router";
+import PlayerDetails from "./PlayerDetails";
+import GameTurn from "./checkers/GameTurn";
 
-const GamePage = (props) => {
-    // const history = useHistory();
+const GamePage = () => {
     const { userData } = useContext(LoginContext);
     const { game, dispatchGame } = useContext(GameContext);
 
@@ -41,16 +40,39 @@ const GamePage = (props) => {
         };
     }, [dispatchGame, userData.user.userName]);
 
-    // useEffect(() => {
-    //     if (game.opponent) socket.emit("connectionCheck", game.opponent.id);
-    // }, [game.opponent]);
-
     return (
         <div>
-            <Board />
-            <button onClick={onClickGiveUp}>Give up</button>
-            <GameDetails />
-            {game.winner && <GameOverModal />}
+            <div className="dark-background"></div>
+            <div className="page-container">
+                <div className="gamePage-content">
+                    <div className="game">
+                        <PlayerDetails
+                            player={userData.user}
+                            title={"Me"}
+                            color={
+                                game.userColor === "white"
+                                    ? "White Player"
+                                    : "Black Player"
+                            }
+                        />
+                        <Board />
+                        {game.opponent && (
+                            <PlayerDetails
+                                player={game.opponent}
+                                title={"Opponent"}
+                                color={
+                                    game.userColor === "white"
+                                        ? "Black Player"
+                                        : "White Player"
+                                }
+                            />
+                        )}
+                    </div>
+                    <GameTurn />
+                    <button onClick={onClickGiveUp}>Give up</button>
+                    {game.winner && <GameOverModal />}
+                </div>
+            </div>
         </div>
     );
 };

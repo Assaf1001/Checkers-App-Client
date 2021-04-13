@@ -25,17 +25,28 @@ const LobbyPage = () => {
 
     return (
         <div>
-            <h1>Lobby Page</h1>
-            <div>
-                <h2>Me:</h2>
-                <h3>{userData.user.userName}</h3>
-                <h3>Level: {userData.user.level}</h3>
-                <h3>Rank: {userData.user.rank}</h3>
+            <div className="dark-background"></div>
+            <div className="page-container">
+                <div className="lobbyPage-content">
+                    <div className="my-account">
+                        <h2>My account</h2>
+                        <h3>Username: {userData.user.userName}</h3>
+                        <h3>Level: {userData.user.level}</h3>
+                        <h3>Rank: {userData.user.rank}</h3>
+                    </div>
+                    <div className="players-online">
+                        <h2>Players Online</h2>
+                        {players.length === 0 ? (
+                            <h3>No players online!</h3>
+                        ) : (
+                            <PlayersList players={players} />
+                        )}
+                    </div>
+                    {messages.isInvitationActive && (
+                        <InvitationModal player={messages.invitationFrom} />
+                    )}
+                </div>
             </div>
-            <PlayersList players={players} />
-            {messages.isInvitationActive && (
-                <InvitationModal player={messages.invitationFrom} />
-            )}
         </div>
     );
 };

@@ -69,7 +69,7 @@ const LoginForm = (props) => {
 
     return (
         <div className="login-form">
-            <h3>LOG IN</h3>
+            <h3>Login</h3>
             {errorMessage !== "" && (
                 <div className="error-message">{errorMessage}</div>
             )}
@@ -100,13 +100,13 @@ const LoginForm = (props) => {
                     </div>
                 )}
                 <button type="submit" disabled={isFormValid()}>
-                    LOG IN
+                    Login
                 </button>
                 <div className="login-signup">
                     Not a member yet?{" "}
-                    <span onClick={() => props.setIsLoginMode(false)}>
-                        SIGN UP
-                    </span>
+                    <button onClick={() => props.setIsLoginMode(false)}>
+                        Sign up
+                    </button>
                 </div>
             </form>
         </div>

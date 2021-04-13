@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,400&display=swap");
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    height: 100%;
+    min-width: 350px;
+    background-image: url(../../images/background.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: $white;
+}
+
+.page-container {
+    width: 100%;
+    height: calc(100vh - 10rem);
+    // margin-top: -10rem;
+    @include flex;
+    flex-direction: column;
+}
+
+.center {
+    margin: 0 auto;
+    max-width: 1440px;
+}
+
+.dark-background {
+    position: absolute;
+    width: 100vw;
+    height: calc(100vh - 10rem);
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.header-background {
+    @extend .dark-background;
+    height: 10rem;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    color: $white;
+    background-color: $crimson;
+    border-radius: 9px;
+    padding: 0.4rem 1rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@media (max-width: $tablet) {
+    body {
+        background-repeat: unset;
+    }
+
+    .page-container {
+        height: calc(100vh - 6rem);
+    }
+
+    .dark-background {
+        height: calc(100vh - 6rem);
+    }
+
+    .header-background {
+        height: 6rem;
+    }
+}

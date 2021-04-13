@@ -6,18 +6,19 @@ import LobbyContextProvider from "../context/LobbyContext.js";
 import GameContextProvider from "../context/GameContext.js";
 import LoginContextProvider from "../context/LoginContext.js";
 import Header from "../components/main/Header.jsx";
-import Footer from "../components/main/Footer.jsx";
 import HomePage from "../components/home/HomePage.jsx";
 import NotFoundPage from "../components/main/NotFoundPage.jsx";
 import LoginPage from "../components/login/LoginPage.jsx";
 import LobbyPage from "../components/lobby/LobbyPage.jsx";
 import GamePage from "../components/game/GamePage.jsx";
 import LeaderBoardPage from "../components/leaderBoard/LeaderBoardPage.jsx";
+import MobileHeader from "../components/main/MobileHeader.jsx";
 
 const AppRouter = () => (
     <BrowserRouter>
         <LoginContextProvider>
             <Header />
+            <MobileHeader />
             <Switch>
                 <Route path="/" exact>
                     <Redirect to="/home" component={HomePage} />
@@ -36,7 +37,6 @@ const AppRouter = () => (
 
                 <Route component={NotFoundPage} />
             </Switch>
-            <Footer />
         </LoginContextProvider>
     </BrowserRouter>
 );

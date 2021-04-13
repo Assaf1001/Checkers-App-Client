@@ -3,8 +3,7 @@ import Player from "./Player";
 
 const PlayersList = ({ players }) => {
     return (
-        <div>
-            <h2>Players List</h2>
+        <div className="players-list">
             {players.map((player) => (
                 <Player key={player.id} player={player} />
             ))}

@@ -1,0 +1,31 @@
+.homePage-content {
+    height: 100%;
+    @include flex;
+    align-items: center;
+    flex-direction: column;
+    text-shadow: $textShadow;
+    margin-top: -10rem;
+
+    & > * {
+        font-weight: 500;
+        margin: 0;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+    h2 {
+        font-size: 4rem;
+        margin-bottom: 0.5rem;
+    }
+    h3 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: $tablet) {
+    .homePage-content {
+        margin-top: -15rem;
+    }
+}

@@ -11,16 +11,19 @@ const LoginPage = (props) => {
         : "";
 
     return (
-        <div className="main__container">
-            <div className="login-form__container">
-                {isLoginMode ? (
-                    <LoginForm
-                        setIsLoginMode={setIsLoginMode}
-                        errorMessage={errorMessage}
-                    />
-                ) : (
-                    <SingupForm setIsLoginMode={setIsLoginMode} />
-                )}
+        <div>
+            <div className="dark-background"></div>
+            <div className="page-container">
+                <div className="loginPage-content">
+                    {isLoginMode ? (
+                        <LoginForm
+                            setIsLoginMode={setIsLoginMode}
+                            errorMessage={errorMessage}
+                        />
+                    ) : (
+                        <SingupForm setIsLoginMode={setIsLoginMode} />
+                    )}
+                </div>
             </div>
         </div>
     );

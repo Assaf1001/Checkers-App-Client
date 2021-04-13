@@ -147,7 +147,7 @@ const SingupForm = (props) => {
 
     return (
         <div className="login-form">
-            <h3>SIGN UP</h3>
+            <h3>Sign up</h3>
             <form onSubmit={onSubmitForm}>
                 <label htmlFor="userName">Pick a user name</label>
                 <input
@@ -195,13 +195,13 @@ const SingupForm = (props) => {
                 <button type="submit" disabled={isFormInvalid()}>
                     SIGN UP
                 </button>
+                <div className="login-signup">
+                    Already a member?{" "}
+                    <button onClick={() => props.setIsLoginMode(true)}>
+                        Login
+                    </button>
+                </div>
             </form>
-            <div
-                className="login-signup"
-                onClick={() => props.setIsLoginMode(true)}
-            >
-                Already a member? <span>LOG IN</span>
-            </div>
         </div>
     );
 };

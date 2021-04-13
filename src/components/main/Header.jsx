@@ -18,22 +18,27 @@ const Header = () => {
 
     return (
         <div>
-            <NavLink to="/home" activeClassName="menu-active">
-                Home
-            </NavLink>
-            <NavLink to="/lobby" activeClassName="menu-active">
-                Lobby
-            </NavLink>
-            <NavLink to="/leaderBoard" activeClassName="menu-active">
-                Leader Board
-            </NavLink>
-            {userData.user ? (
-                <h4 onClick={handleLogout}>LOGOUT</h4>
-            ) : (
-                <NavLink to="/login" activeClassName="menu-active">
-                    Login
-                </NavLink>
-            )}
+            <div className="header-background"></div>
+            <div className="header-container">
+                <div className="header-content center">
+                    <NavLink to="/home" activeClassName="menu-active">
+                        Home
+                    </NavLink>
+                    <NavLink to="/lobby" activeClassName="menu-active">
+                        Lobby
+                    </NavLink>
+                    <NavLink to="/leaderBoard" activeClassName="menu-active">
+                        Leader <br /> Board
+                    </NavLink>
+                    {userData.user ? (
+                        <p onClick={handleLogout}>Logout</p>
+                    ) : (
+                        <NavLink to="/login" activeClassName="menu-active">
+                            Login
+                        </NavLink>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };

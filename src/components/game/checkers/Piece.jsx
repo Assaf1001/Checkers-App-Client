@@ -26,14 +26,26 @@ const Piece = ({ piece, index, isDesktopMode }) => {
                     draggable={isDragabble}
                     onDragStart={dragPiece}
                     className={
-                        piece.color === "black" ? "black-piece" : "white-piece"
+                        piece.color === "black"
+                            ? piece.isKing
+                                ? "black-king"
+                                : "black-piece"
+                            : piece.isKing
+                            ? " white-king"
+                            : "white-piece"
                     }
                 ></div>
             ) : (
                 <div
                     onClick={handleClick}
                     className={
-                        piece.color === "black" ? "black-piece" : "white-piece"
+                        piece.color === "black"
+                            ? piece.isKing
+                                ? "black-king"
+                                : "black-piece"
+                            : piece.isKing
+                            ? " white-king"
+                            : "white-piece"
                     }
                 ></div>
             )}

@@ -25,11 +25,11 @@ let isDoubleCaptureActive = false;
 // prettier-ignore
 export let board = [
     [undefined,null,undefined,null,undefined,null,undefined,null],
-    [null,undefined,null,undefined,null,undefined,null,undefined],
+    [null,undefined,null,undefined,null,undefined,new Piece(true),undefined],
     [undefined,null,undefined,null,undefined,null,undefined,null],
     [null,undefined,null,undefined,null,undefined,null,undefined],
     [undefined,null,undefined,new Piece(false),undefined,null,undefined,null],
-    [null,undefined,null,undefined,new Piece(true),undefined,null,undefined],
+    [null,undefined,null,undefined,null,undefined,null,undefined],
     [undefined,null,undefined,null,undefined,null,undefined,null],
     [null,undefined,null,undefined,null,undefined,null,undefined],
 ]
@@ -237,8 +237,8 @@ const isKingCanMove = (row,column)=>{
 }
 
 const isDraw = (whiteKings, blackKings) =>
-    (whiteKings === 1 && blackKings <= 2) ||
-    (whiteKings <= 2 && blackKings === 1);
+    (whiteKings === 1 && blackKings === 2) ||
+    (whiteKings === 2 && blackKings === 1);
 
 // prettier-ignore
 const isGameOver = () => {
@@ -269,6 +269,7 @@ const isGameOver = () => {
         winner = 'white'
         return true
     }else if(isDraw(whiteKings,blackKings)){
+        console.log()
         winner = 'draw'
         return true
     }

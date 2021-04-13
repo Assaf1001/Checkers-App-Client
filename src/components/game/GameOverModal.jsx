@@ -78,7 +78,7 @@ const GameOverModal = () => {
     };
 
     return (
-        <div>
+        <div className="modal">
             <h1>Game Over</h1>
 
             {game.winner === "draw" ? (

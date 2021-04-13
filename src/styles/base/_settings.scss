@@ -1,3 +1,19 @@
-* {
-    box-sizing: border-box;
+// Colors
+$black: #000000;
+$white: #ffffff;
+$gray: #000000bf;
+$crimson: #631e31;
+$crimson-opacity: #631e31bf;
+$opacity: #dcdcdc33;
+
+$textShadow: 0px 3px 6px $gray;
+
+// Break Points
+$mobile: 668px;
+$tablet: 1024px;
+
+@mixin flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

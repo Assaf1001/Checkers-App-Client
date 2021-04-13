@@ -1,0 +1,91 @@
+.gamePage-content {
+    width: 100%;
+    height: 100vh;
+    @include flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    justify-content: flex-start;
+    text-align: center;
+
+    .game {
+        @include flex;
+        align-items: flex-start;
+        justify-content: space-evenly;
+        width: 75%;
+        min-width: 60%;
+
+        .player-details {
+            @include flex;
+            flex-direction: column;
+            background: $opacity;
+            padding: 3rem;
+            margin-top: -30px;
+            margin-left: 1rem;
+            margin-right: 1rem;
+
+            & > * {
+                font-weight: 500;
+                margin: 0.2rem 0;
+            }
+
+            h1 {
+                margin-bottom: 1rem;
+            }
+
+            .white-piece,
+            .black-piece {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    }
+}
+
+@media (max-width: 1600px) {
+    .gamePage-content {
+        .game {
+            width: 85%;
+        }
+    }
+}
+
+@media (max-width: 1400px) {
+    .gamePage-content {
+        .game {
+            .player-details {
+                padding: 1rem;
+            }
+        }
+    }
+}
+
+@media (max-width: $tablet) {
+    .gamePage-content {
+        padding: 0;
+        .game {
+            width: 100%;
+            flex-direction: column;
+            .player-details {
+                width: 100%;
+                height: 3rem;
+                margin: 0;
+                padding: 0;
+                flex-direction: row;
+
+                & > * {
+                    font-size: 1rem;
+                }
+
+                .title {
+                    display: none;
+                }
+
+                .white-piece,
+                .black-piece {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+        }
+    }
+}

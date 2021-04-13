@@ -13,9 +13,22 @@ const LeaderBoardPage = () => {
 
     return (
         <div>
-            {leaderBoard.map((user) => (
-                <User key={user.userName} user={user} />
-            ))}
+            <div className="dark-background"></div>
+            <div className="page-container">
+                <div className="leaderBoard-content">
+                    <h1>Leader Board</h1>
+                    <div className="leaderBoard">
+                        <h3>User Name</h3>
+                        <h3>Level</h3>
+                        <h3>Rank</h3>
+                        {leaderBoard
+                            .sort((a, b) => b.rank - a.rank)
+                            .map((user) => (
+                                <User key={user.userName} user={user} />
+                            ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
